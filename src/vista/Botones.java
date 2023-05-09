@@ -41,9 +41,9 @@ public class Botones extends javax.swing.JPanel {
         btnEditar = new vista.AccionBoton();
         btnVer = new vista.AccionBoton();
 
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/edit.png"))); // NOI18N
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/pencil18x18.png"))); // NOI18N
 
-        btnVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/view.png"))); // NOI18N
+        btnVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/eye18x18.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

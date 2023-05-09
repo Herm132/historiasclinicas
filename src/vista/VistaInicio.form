@@ -99,7 +99,7 @@
                               <Component id="btnBuscar" alignment="0" min="-2" pref="20" max="-2" attributes="0"/>
                               <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="319" max="32767" attributes="0"/>
+                          <EmptySpace pref="304" max="32767" attributes="0"/>
                           <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -249,6 +249,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="btnSalir">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Imagenes/exit20x20.png"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -259,6 +264,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="btnInicio">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Imagenes/home20x20.png"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
@@ -269,6 +279,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="btnNPaciente">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Imagenes/user-add20x20.png"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
@@ -279,6 +294,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="btnBuscar">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Imagenes/search20x20.png"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

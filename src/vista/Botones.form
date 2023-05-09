@@ -42,14 +42,14 @@
     <Component class="vista.AccionBoton" name="btnEditar">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/edit.png"/>
+          <Image iconType="3" name="/Imagenes/pencil18x18.png"/>
         </Property>
       </Properties>
     </Component>
     <Component class="vista.AccionBoton" name="btnVer">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/view.png"/>
+          <Image iconType="3" name="/Imagenes/eye18x18.png"/>
         </Property>
       </Properties>
     </Component>

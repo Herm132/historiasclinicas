@@ -23,12 +23,12 @@ public class Inicio {
 
     public static void main(String[] args) {
 
-        String imagePath = "/Imagenes/fondo1.jpg";
+        String imagePath = "/Imagenes/fondo900x506.jpg";
 
         JFrame jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setUndecorated(true);
-        jFrame.setSize(800, 500);
+        jFrame.setSize(900, 506);
 
         JPanel panel = new JPanel(new BorderLayout());
 
@@ -54,7 +54,7 @@ public class Inicio {
 
         panel.add(progressBar, BorderLayout.SOUTH);
 
-        Timer timer = new Timer(200, new ActionListener() {
+        Timer timer = new Timer(350, new ActionListener() {
             int counter = 0;
 
             @Override

@@ -1,11 +1,9 @@
 package vista;
 
 import java.awt.Color;
-import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.Icon;
-import javax.swing.JLabel;
 
 /**
  *
@@ -20,10 +18,7 @@ public class VistaInicio extends javax.swing.JFrame {
     public VistaInicio() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.ajustarImagen(btnInicio, "src/Imagenes/home.png");
-        this.ajustarImagen(btnNPaciente, "src/Imagenes/user-add.png");
-        this.ajustarImagen(btnBuscar, "src/Imagenes/search.png");
-        this.ajustarImagen(btnSalir, "src/Imagenes/exit.png");
+
 
         TablaEventos event = new TablaEventos() {
             @Override
@@ -31,15 +26,7 @@ public class VistaInicio extends javax.swing.JFrame {
                 System.out.println("Edit row : " + row);
             }
 
-            @Override
-            public void onDelete(int row) {
-                if (jTableDatos.isEditing()) {
-                    jTableDatos.getCellEditor().stopCellEditing();
-                }
-                DefaultTableModel model = (DefaultTableModel) jTableDatos.getModel();
-                model.removeRow(row);
 
-            }
 
             @Override
             public void onView(int row) {
@@ -53,15 +40,7 @@ public class VistaInicio extends javax.swing.JFrame {
 
     }
 
-    private void ajustarImagen(JLabel lable, String ruta) {
-        this.imagen = new ImageIcon(ruta);
-        this.icono = new ImageIcon(this.imagen.getImage().getScaledInstance(
-                lable.getWidth(),
-                lable.getHeight(),
-                Image.SCALE_DEFAULT));
-        lable.setIcon(this.icono);
-        this.repaint();
-    }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -139,14 +118,22 @@ public class VistaInicio extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel3.setText("Salir");
 
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/exit20x20.png"))); // NOI18N
+
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel5.setText("Inicio");
+
+        btnInicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/home20x20.png"))); // NOI18N
 
         jLabel8.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel8.setText("Nuevo Paciente");
 
+        btnNPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/user-add20x20.png"))); // NOI18N
+
         jLabel9.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel9.setText("Buscar");
+
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search20x20.png"))); // NOI18N
 
         javax.swing.GroupLayout fondoLayout = new javax.swing.GroupLayout(fondo);
         fondo.setLayout(fondoLayout);
@@ -195,7 +182,7 @@ public class VistaInicio extends javax.swing.JFrame {
                         .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 319, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 304, Short.MAX_VALUE)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

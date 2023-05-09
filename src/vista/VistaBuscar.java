@@ -18,10 +18,6 @@ public class VistaBuscar extends javax.swing.JFrame {
     public VistaBuscar() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.ajustarImagen(btnInicio, "src/Imagenes/home.png");
-        this.ajustarImagen(btnNPaciente, "src/Imagenes/user-add.png");
-        this.ajustarImagen(btnBuscar, "src/Imagenes/search.png");
-        this.ajustarImagen(btnSalir, "src/Imagenes/exit.png");
     
 
         TablaEventos event = new TablaEventos() {
@@ -30,15 +26,6 @@ public class VistaBuscar extends javax.swing.JFrame {
                 System.out.println("Edit row : " + row);
             }
 
-            @Override
-            public void onDelete(int row) {
-                if (jTableDatos.isEditing()) {
-                    jTableDatos.getCellEditor().stopCellEditing();
-                }
-                DefaultTableModel model = (DefaultTableModel) jTableDatos.getModel();
-                model.removeRow(row);
-
-            }
 
             @Override
             public void onView(int row) {
@@ -52,15 +39,6 @@ public class VistaBuscar extends javax.swing.JFrame {
 
     }
 
-    private void ajustarImagen(JLabel lable, String ruta) {
-        this.imagen = new ImageIcon(ruta);
-        this.icono = new ImageIcon(this.imagen.getImage().getScaledInstance(
-                lable.getWidth(),
-                lable.getHeight(),
-                Image.SCALE_DEFAULT));
-        lable.setIcon(this.icono);
-        this.repaint();
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -82,7 +60,7 @@ public class VistaBuscar extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnBuscar1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -141,14 +119,22 @@ public class VistaBuscar extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel3.setText("Salir");
 
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/exit20x20.png"))); // NOI18N
+
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel5.setText("Inicio");
+
+        btnInicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/home20x20.png"))); // NOI18N
 
         jLabel8.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel8.setText("Nuevo Paciente");
 
+        btnNPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/user-add20x20.png"))); // NOI18N
+
         jLabel9.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel9.setText("Ingrese  Nombre, Apellido o Número  de Cédula :");
+
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search20x20.png"))); // NOI18N
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel10.setText("Buscar");
@@ -160,7 +146,8 @@ public class VistaBuscar extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/view.png"))); // NOI18N
+        btnBuscar1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnBuscar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search16x16.png"))); // NOI18N
 
         javax.swing.GroupLayout fondoLayout = new javax.swing.GroupLayout(fondo);
         fondo.setLayout(fondoLayout);
@@ -198,21 +185,24 @@ public class VistaBuscar extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBuscar1)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         fondoLayout.setVerticalGroup(
             fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fondoLayout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
-                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel9)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
-                    .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel9)))
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(fondoLayout.createSequentialGroup()
                         .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -229,7 +219,7 @@ public class VistaBuscar extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(3, 3, 3))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -290,11 +280,11 @@ public class VistaBuscar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnBuscar;
+    private javax.swing.JLabel btnBuscar1;
     private javax.swing.JLabel btnInicio;
     private javax.swing.JLabel btnNPaciente;
     private javax.swing.JLabel btnSalir;
     private javax.swing.JPanel fondo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
