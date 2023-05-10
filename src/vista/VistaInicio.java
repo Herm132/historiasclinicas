@@ -1,42 +1,16 @@
 package vista;
 
-import java.awt.Color;
-import javax.swing.ImageIcon;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.Icon;
-
 /**
  *
  * @author Harold
  */
 public class VistaInicio extends javax.swing.JFrame {
 
-    private ImageIcon imagen;
-    private Icon icono;
-    DefaultTableModel dtm = new DefaultTableModel();
 
     public VistaInicio() {
         initComponents();
-        this.setLocationRelativeTo(null);
+        
 
-
-        TablaEventos event = new TablaEventos() {
-            @Override
-            public void onEdit(int row) {
-                System.out.println("Edit row : " + row);
-            }
-
-
-
-            @Override
-            public void onView(int row) {
-                System.out.println("View row : " + row);
-            }
-        };
-
-        jTableDatos.getColumnModel().getColumn(3).setCellRenderer(new CeldaRender());
-        jTableDatos.getColumnModel().getColumn(3).setCellEditor(new CeldaEditor(event));
-        jTableDatos.setGridColor(Color.BLUE);
 
     }
 
@@ -68,17 +42,22 @@ public class VistaInicio extends javax.swing.JFrame {
         jTableDatos.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jTableDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1750297853", "Harold", "Reyes", null},
-                {"9999999999", "Paciente1", "Paciente1", null},
-                {"9999999999", "Paciente2", "Paciente2", null}
+
             },
             new String [] {
                 "Cédula", "Nombres", "Apellidos", "Acciones"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, true
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];

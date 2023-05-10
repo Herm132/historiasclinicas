@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package historiasclinicas;
 
+import controlador.ControlListaPacientes;
 import controlador.Controlador;
-import modelo.Conexion;
 import modelo.Consulta;
+import vista.VistaInicio;
 import vista.VistaNuevoPaciente;
 
 /**
@@ -22,12 +19,16 @@ public class Historiasclinicas {
 
         Consulta con = new Consulta();
         VistaNuevoPaciente view1 = new VistaNuevoPaciente();
+        VistaInicio view2 = new VistaInicio();
+        
 
 
         Controlador ctrl = new Controlador(con, view1);
-        ctrl.iniciar();
-
-        view1.setVisible(true);
+        ControlListaPacientes c = new ControlListaPacientes(con, view2);
+//        ctrl.iniciar();
+        c.iniciar();
+//
+//        view1.setVisible(true);
     }
     
 }
