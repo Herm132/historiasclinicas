@@ -4,7 +4,7 @@
  */
 package controlador;
 
-import vista.VistaNuevoPaciente;
+import vista.VistaNuevoPacientexzxcx;
 
 /**
  *
@@ -12,9 +12,9 @@ import vista.VistaNuevoPaciente;
  */
 public class ControlPersona {
 
-    private final VistaNuevoPaciente npaciente;
+    private final VistaNuevoPacientexzxcx npaciente;
 
-    public ControlPersona(VistaNuevoPaciente npaciente) {
+    public ControlPersona(VistaNuevoPacientexzxcx npaciente) {
 
         this.npaciente = npaciente;
     }

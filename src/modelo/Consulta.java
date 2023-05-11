@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,7 +30,7 @@ public class Consulta extends Conexion {
             int cantidadColumnas = resultado.getColumnCount();
             while (rs.next()) {
                 Object[] filas = new Object[cantidadColumnas];
-          
+
                 for (int i = 0; i < cantidadColumnas; i++) {
                     filas[i] = rs.getObject(i + 1);
                 }
@@ -39,8 +40,80 @@ public class Consulta extends Conexion {
         } catch (SQLException e) {
             System.err.println(e);
 
-        } 
-  
+        }
+
+    }
+
+    public void busquedaPacientes(DefaultTableModel modelo, String busco) {
+
+        Connection con = establecerConexion();
+        String sql = "SELECT \"num_Cedula\", nombres, apellidos\n"
+                + "FROM paciente\n"
+                + "WHERE nombres ILIKE '%" + busco + "%' \n"
+                + "OR apellidos ILIKE '%" + busco + "%' "
+                + "OR \"num_Cedula\" ILIKE '%" + busco + "%' ";
+
+        try {
+
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            ResultSetMetaData resultado = rs.getMetaData();
+            int cantidadColumnas = resultado.getColumnCount();
+            while (rs.next()) {
+                Object[] filas = new Object[cantidadColumnas];
+
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    filas[i] = rs.getObject(i + 1);
+                }
+                modelo.addRow(filas);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e);
+
+        }
+
+    }
+
+    public ArrayList<Paciente> buscarPacineteID(String busco) {
+
+        Connection con = establecerConexion();
+        String sql = "SELECT *\n"
+                + "FROM paciente\n"
+                + "WHERE \"num_Cedula\"='" + busco + "' ";
+
+        try {
+            ArrayList<Paciente> pacientes = new ArrayList<>();
+
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            ArrayList<String> datosPaciente = new ArrayList<>();
+            while (rs.next()) {
+                String numCedula = rs.getString("num_Cedula");
+                String nombres = rs.getString("nombres");
+                String apellidos = rs.getString("apellidos");
+                String fechaNacimietno = rs.getString("apellidos");
+                String sexo = rs.getString("apellidos");
+                String instruccion = rs.getString("apellidos");
+                String estadoCivil = rs.getString("apellidos");
+                String direcion = rs.getString("apellidos");
+                String numero1 = rs.getString("apellidos");
+                String numero2 = rs.getString("apellidos");
+                String correo = rs.getString("apellidos");
+                String fechaRegistro = rs.getString("apellidos");
+
+                Paciente paciente = new Paciente(numCedula, nombres, apellidos, fechaNacimietno, sexo, instruccion, estadoCivil, direcion, numero1, numero2, correo, fechaRegistro);
+                pacientes.add(paciente);
+            }
+            return pacientes;
+
+        } catch (SQLException e) {
+            System.err.println(e);
+            return null;
+
+        }
+
     }
 
     public boolean agregarPaciente(Paciente pac) {

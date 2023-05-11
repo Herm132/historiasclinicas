@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import modelo.Consulta;
 import modelo.Paciente;
-import vista.VistaNuevoPaciente;
+import vista.VistaNuevoPacientexzxcx;
 
 /**
  *
@@ -15,9 +15,9 @@ import vista.VistaNuevoPaciente;
 public class Controlador implements ActionListener {
 
     private final Consulta consulta;
-    private final VistaNuevoPaciente vNuevoPaciente;
+    private final VistaNuevoPacientexzxcx vNuevoPaciente;
 
-    public Controlador(Consulta consulta, VistaNuevoPaciente vNuevoPaciente) {
+    public Controlador(Consulta consulta, VistaNuevoPacientexzxcx vNuevoPaciente) {
         this.consulta = consulta;
 
         this.vNuevoPaciente = vNuevoPaciente;
@@ -26,6 +26,7 @@ public class Controlador implements ActionListener {
     }
 
     public void iniciar() {
+        
         vNuevoPaciente.setTitle("Nuevo Paciente");
         vNuevoPaciente.setResizable(false);
         vNuevoPaciente.setLocationRelativeTo(null);

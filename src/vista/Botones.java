@@ -4,8 +4,12 @@
  */
 package vista;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
 
 /**
  *
@@ -18,9 +22,12 @@ public class Botones extends javax.swing.JPanel {
      */
     public Botones() {
         initComponents();
+        setCustomCursor(btnEditar); // cambiar cursor del botón de edición
+        setCustomCursor(btnVer);
+
     }
 
- public void initEvent(TablaEventos event, int row) {
+    public void initEvent(TablaEventos event, int row) {
         btnEditar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -33,7 +40,20 @@ public class Botones extends javax.swing.JPanel {
                 event.onView(row);
             }
         });
- }
+    }
+
+    public static void setCustomCursor(JButton label) {
+        label.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            public void mouseExited(MouseEvent e) {
+                label.setCursor(Cursor.getDefaultCursor());
+            }
+        });
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
