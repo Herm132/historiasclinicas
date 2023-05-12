@@ -23,9 +23,11 @@ import modelo.Paciente;
  */
 public final class VistaInicio extends javax.swing.JFrame {
 
-    private VistaNuevoPacientexzxcx vistanp = new VistaNuevoPacientexzxcx();
+    private VistaNuevoPacientexzxcx vistanp = null;
+    private VistaMotivoConsulta vistamc = null;
     private Controlador contr;
     private final Consulta consulta = new Consulta();
+    
 
     public VistaInicio() {
         initComponents();
@@ -87,6 +89,32 @@ public final class VistaInicio extends javax.swing.JFrame {
         });
     }
 
+    public void btnEditar() {
+
+//                enviarDatos(row);
+        // Obtener el índice de la columna "num_Cedula"
+        int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
+
+        // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
+        int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
+        String identificador = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
+
+        Paciente nprec = new Paciente();
+        nprec = consulta.buscarPacineteID(identificador);
+        System.out.println(nprec.getApellidos());
+
+        
+        
+        
+        this.dispose();
+
+        vistamc = new VistaMotivoConsulta();
+
+        vistamc.setVisible(true);
+        
+        vistamc.txtApellidos.setText(nprec.getApellidos());
+    }
+
     public void modeloTabla() {
         DefaultTableModel modelo = new DefaultTableModel() {
             @Override
@@ -107,21 +135,7 @@ public final class VistaInicio extends javax.swing.JFrame {
         TablaEventos event = new TablaEventos() {
             @Override
             public void onEdit(int row) {
-                // Obtener el índice de la columna "num_Cedula"
-                int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
-
-// Obtener el valor de la celda seleccionada en la columna "num_Cedula"
-                int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
-                String identificador = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
-
-                ArrayList<Paciente> pacientes = consulta.buscarPacineteID(identificador);
-                for (Paciente paciente : pacientes) {
-                    System.out.println("Cédula: " + paciente.getNumCedula());
-                    System.out.println("Nombres: " + paciente.getNombres());
-                    System.out.println("Apellidos: " + paciente.getApellidos());
-                    // Muestra aquí los otros atributos de la clase Paciente
-                }
-
+                btnEditar();
             }
 
             @Override
@@ -357,16 +371,14 @@ public final class VistaInicio extends javax.swing.JFrame {
     private void jLabelNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelNPacienteMouseClicked
 
         this.dispose();
-
         vistanp.setVisible(true);
-
 
     }//GEN-LAST:event_jLabelNPacienteMouseClicked
 
     private void btnNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNPacienteMouseClicked
-        this.dispose();
+        //    this.dispose();
 
-        vistanp.setVisible(true);
+        //    vistanp.setVisible(true);
     }//GEN-LAST:event_btnNPacienteMouseClicked
 
     /**

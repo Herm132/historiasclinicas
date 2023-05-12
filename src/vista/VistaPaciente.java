@@ -5,10 +5,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
+import modelo.Consulta;
+import modelo.Paciente;
+import modelo.Sesion;
 
 /**
  *
@@ -18,7 +24,11 @@ public final class VistaPaciente extends javax.swing.JFrame {
 
     private final VistaNuevoPacientexzxcx vistaNP = new VistaNuevoPacientexzxcx();
     private VistaInicio vistaI = null;
-
+    private Consulta consulta = null;
+    private Paciente paciente =null;
+    private Sesion sesion =null;
+    
+ 
     public VistaPaciente() {
         initComponents();
 
@@ -216,14 +226,23 @@ public final class VistaPaciente extends javax.swing.JFrame {
         jTextAreaHistoria.setColumns(20);
         jTextAreaHistoria.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jTextAreaHistoria.setRows(5);
-        jTextAreaHistoria.setText("Fecha:Dia de hoy ----------\nDescripcion:-------------------------\n___________________________________________________________________________________\nFecha:Dia de hoy ----------\nMotivo de Consulta: --------------------------------\nDescripcion:-------------------------\n___________________________________________________________________________________\nFecha:Dia de hoy ----------\nMotivo de Consulta: --------------------------------\nDescripcion:-------------------------\n___________________________________________________________________________________");
         jScrollPane1.setViewportView(jTextAreaHistoria);
 
         btnGuardar.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         btnGuardar.setText("Guardar");
+        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnGuardarMouseClicked(evt);
+            }
+        });
 
         btnNFecha.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        btnNFecha.setText("Agregar Fecha Actual");
+        btnNFecha.setText("Insertar Fecha");
+        btnNFecha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnNFechaMouseClicked(evt);
+            }
+        });
 
         txtMConsulta.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtMConsulta.setText("Motivo de consulta");
@@ -344,8 +363,8 @@ public final class VistaPaciente extends javax.swing.JFrame {
                                     .addComponent(txtMConsulta)
                                     .addComponent(jLabel6))))
                         .addGap(34, 34, 34)
-                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnNFecha)
+                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnNFecha, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnGuardar))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)))
@@ -401,6 +420,34 @@ public final class VistaPaciente extends javax.swing.JFrame {
 
         vistaNP.setVisible(true);
     }//GEN-LAST:event_btnNPacienteMouseClicked
+
+    private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
+        // Obtén el contenido del JTextArea
+        String contenido = jTextAreaHistoria.getText();
+        consulta = new Consulta();
+        sesion= new Sesion(WIDTH, ICONIFIED, contenido, contenido);
+//        consulta.guardarCita(contenido);
+
+
+    }//GEN-LAST:event_btnGuardarMouseClicked
+
+    private void btnNFechaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNFechaMouseClicked
+        // Obtiene la fecha actual en el formato deseado
+        LocalDate fechaActual = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fechaActualTexto = fechaActual.format(formato);
+
+        // Obtiene la hora actual en el formato deseado
+        LocalTime horaActual = LocalTime.now();
+        formato = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String horaActualTexto = horaActual.format(formato);
+
+        // Inserta la fecha actual en el JTextArea
+        jTextAreaHistoria.append("\n_________________________________________________________________________________________________________________\n"
+                + "Fecha: " + fechaActualTexto + "\n"
+                + "Hora: " + horaActualTexto + "\n"
+                + "Descripción: ");
+    }//GEN-LAST:event_btnNFechaMouseClicked
 
     /**
      * @param args the command line arguments

@@ -44,6 +44,11 @@ public class Paciente {
         this.fechaRegistro = fechaRegistro;
     }
 
+    @Override
+    public String toString() {
+        return "Paciente{" + "numCedula=" + numCedula + ", nombres=" + nombres + ", apellidos=" + apellidos + ", fechaNacimiento=" + fechaNacimiento + ", sexo=" + sexo + ", instruccion=" + instruccion + ", estadoCivil=" + estadoCivil + ", direccion=" + direccion + ", numTelefono1=" + numTelefono1 + ", numTelefono2=" + numTelefono2 + ", correo=" + correo + ", fechaRegistro=" + fechaRegistro + '}';
+    }
+
 
 
     public String getNumCedula() {

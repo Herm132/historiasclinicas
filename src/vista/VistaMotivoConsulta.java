@@ -22,12 +22,13 @@ import modelo.Paciente;
  */
 public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
-    private final VistaNuevoPacientexzxcx vistaNP = new VistaNuevoPacientexzxcx();
+    private final VistaNuevoPacientexzxcx vistaNP = null;
     private VistaInicio vistaI = null;
     private final Consulta consulta = new Consulta();
 
     public VistaMotivoConsulta() {
         initComponents();
+//llenarLabels();
 
         ImageIcon icono = new ImageIcon(getClass().getResource("/Imagenes/Logo.png"));
 
@@ -65,6 +66,11 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         this.jTableDatos.getTableHeader().setReorderingAllowed(false);
     }
 
+    public void llenarLabel(){
+    
+    
+    
+    }
     public void mensaje() {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que quieres salir?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
@@ -84,6 +90,10 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                 label.setCursor(Cursor.getDefaultCursor());
             }
         });
+    }
+
+    public void cargarDatosPaciente() {
+
     }
 
     public void modeloTabla() {
@@ -110,14 +120,14 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
                 int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
                 String identificador = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
-
-                ArrayList<Paciente> pacientes = consulta.buscarPacineteID(identificador);
-                for (Paciente paciente : pacientes) {
-                    System.out.println("Cédula: " + paciente.getNumCedula());
-                    System.out.println("Nombres: " + paciente.getNombres());
-                    System.out.println("Apellidos: " + paciente.getApellidos());
-                    // Muestra aquí los otros atributos de la clase Paciente
-                }
+                
+//               
+//                for (Paciente paciente : pacientes) {
+//                    System.out.println("Cédula: " + paciente.getNumCedula());
+//                    System.out.println("Nombres: " + paciente.getNombres());
+//                    System.out.println("Apellidos: " + paciente.getApellidos());
+//                    // Muestra aquí los otros atributos de la clase Paciente
+//                }
 
             }
 

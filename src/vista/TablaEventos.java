@@ -1,5 +1,7 @@
 package vista;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author RAVEN

@@ -13,83 +13,126 @@ import javax.swing.table.DefaultTableModel;
  * @author Harold
  */
 public class Consulta extends Conexion {
-
+    
     private ResultSet rs = null;
     private PreparedStatement ps = null;
-
+    
+    public void guardarCita(Sesion secion, String contenido) {
+        Connection con = establecerConexion();
+        String sql = "INSERT INTO public.sesion(\n"
+                + "\"id_Paciente\", \"id_Mconsulta\", \"fecha_Sesion\", descripcion)\n"
+                + "	VALUES (?, ?, ?, ?);";
+        
+        try {
+            
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, secion.getIdPaciente());
+            ps.setInt(2, secion.getIdMConsulta());
+            ps.setString(3, secion.getFecha());
+            ps.setString(4, contenido);
+            
+            ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.err.println(e);
+            
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            
+        }
+        
+    }
+    
     public void listaPacientes(DefaultTableModel modelo) {
-
+        
         Connection con = establecerConexion();
         String sql = "SELECT \"num_Cedula\",nombres ,apellidos FROM paciente";
-
+        
         try {
-
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData resultado = rs.getMetaData();
             int cantidadColumnas = resultado.getColumnCount();
             while (rs.next()) {
                 Object[] filas = new Object[cantidadColumnas];
-
+                
                 for (int i = 0; i < cantidadColumnas; i++) {
                     filas[i] = rs.getObject(i + 1);
                 }
                 modelo.addRow(filas);
             }
-
+            
         } catch (SQLException e) {
             System.err.println(e);
-
+            
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            
         }
-
+        
     }
-
+    
     public void busquedaPacientes(DefaultTableModel modelo, String busco) {
-
+        
         Connection con = establecerConexion();
         String sql = "SELECT \"num_Cedula\", nombres, apellidos\n"
                 + "FROM paciente\n"
                 + "WHERE nombres ILIKE '%" + busco + "%' \n"
                 + "OR apellidos ILIKE '%" + busco + "%' "
                 + "OR \"num_Cedula\" ILIKE '%" + busco + "%' ";
-
+        
         try {
-
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData resultado = rs.getMetaData();
             int cantidadColumnas = resultado.getColumnCount();
             while (rs.next()) {
                 Object[] filas = new Object[cantidadColumnas];
-
+                
                 for (int i = 0; i < cantidadColumnas; i++) {
                     filas[i] = rs.getObject(i + 1);
                 }
                 modelo.addRow(filas);
             }
-
+            
         } catch (SQLException e) {
             System.err.println(e);
-
+            
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            
         }
-
+        
     }
-
-    public ArrayList<Paciente> buscarPacineteID(String busco) {
-
+    
+    public Paciente buscarPacineteID(String busco) {
+        
         Connection con = establecerConexion();
         String sql = "SELECT *\n"
                 + "FROM paciente\n"
                 + "WHERE \"num_Cedula\"='" + busco + "' ";
-
+        
         try {
-            ArrayList<Paciente> pacientes = new ArrayList<>();
-
+            Paciente pac = null;            
+            
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-
-            ArrayList<String> datosPaciente = new ArrayList<>();
-            while (rs.next()) {
+            
+            while (rs.next()) {                
                 String numCedula = rs.getString("num_Cedula");
                 String nombres = rs.getString("nombres");
                 String apellidos = rs.getString("apellidos");
@@ -102,27 +145,34 @@ public class Consulta extends Conexion {
                 String numero2 = rs.getString("apellidos");
                 String correo = rs.getString("apellidos");
                 String fechaRegistro = rs.getString("apellidos");
-
-                Paciente paciente = new Paciente(numCedula, nombres, apellidos, fechaNacimietno, sexo, instruccion, estadoCivil, direcion, numero1, numero2, correo, fechaRegistro);
-                pacientes.add(paciente);
+                pac = new Paciente(numCedula, nombres, apellidos, fechaNacimietno, sexo, instruccion, estadoCivil, direcion, numero1, numero2, correo, fechaRegistro);
+                
             }
-            return pacientes;
-
+            
+            return pac;
+            
         } catch (SQLException e) {
             System.err.println(e);
             return null;
-
+            
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            
         }
-
+        
     }
-
+    
     public boolean agregarPaciente(Paciente pac) {
         Connection con = establecerConexion();
         String sql = "INSERT INTO public.paciente(\"num_Cedula\", nombres, apellidos, \"fecha_Nacimiento\", sexo, intruccion, \"estado_Civil\", direccion, \"num_Telefono1\", \"num_Telefono2\", correo, \"fecha_Registro\")\n"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         try {
             ps = con.prepareStatement(sql);
-
+            
             ps.setString(1, pac.getNumCedula());
             ps.setString(2, pac.getNombres());
             ps.setString(3, pac.getApellidos());
@@ -135,23 +185,23 @@ public class Consulta extends Conexion {
             ps.setString(10, pac.getNumTelefono2());
             ps.setString(11, pac.getCorreo());
             ps.setString(12, pac.getFechaRegistro());
-
+            
             ps.execute();
             return true;
-
+            
         } catch (SQLException e) {
             System.err.println(e);
             return false;
-
+            
         } finally {
             try {
                 con.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
-
+            
         }
-
+        
     }
 
 //    public Persona buscarPersona(String cedula) {
@@ -177,10 +227,10 @@ public class Consulta extends Conexion {
             while (r.next()) {
                 resultado++;
             }
-
+            
         } catch (SQLException e) {
             System.out.println("Error: " + e);
-
+            
         }
         return resultado + 1;
     }
