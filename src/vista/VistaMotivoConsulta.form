@@ -89,20 +89,18 @@
                                       <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtEdad" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtInstruccion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtSexo" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtApellidos" min="-2" pref="117" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="txtNumCedula" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="txtNombres" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="txtFechaRegistro" alignment="0" max="32767" attributes="0"/>
-                                      </Group>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="txtNumCedula" alignment="0" pref="150" max="32767" attributes="0"/>
+                                      <Component id="txtSexo" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtInstruccion" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtEdad" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtApellidos" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtNombres" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtFechaRegistro" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace pref="161" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jLabel11" alignment="0" max="32767" attributes="0"/>
@@ -114,15 +112,12 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtEstadoCivil" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="txtDireccion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtTef1" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="txtTef2" alignment="0" min="-2" pref="65" max="-2" attributes="0"/>
-                              <Component id="txtCorreo" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
+                              <Component id="txtCorreo" max="32767" attributes="0"/>
+                              <Component id="txtTef2" max="32767" attributes="0"/>
+                              <Component id="txtTef1" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtEstadoCivil" alignment="0" pref="227" max="32767" attributes="0"/>
+                              <Component id="txtDireccion" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="155" max="32767" attributes="0"/>
                       </Group>
                       <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   </Group>
@@ -675,6 +670,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Correo"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtCorreoMouseClicked"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>

@@ -10,8 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import controlador.Controlador;
 import java.awt.Font;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.*;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import modelo.Consulta;
@@ -27,7 +28,6 @@ public final class VistaInicio extends javax.swing.JFrame {
     private VistaMotivoConsulta vistamc = null;
     private Controlador contr;
     private final Consulta consulta = new Consulta();
-    
 
     public VistaInicio() {
         initComponents();
@@ -101,18 +101,36 @@ public final class VistaInicio extends javax.swing.JFrame {
 
         Paciente nprec = new Paciente();
         nprec = consulta.buscarPacineteID(identificador);
-        System.out.println(nprec.getApellidos());
 
-        
-        
-        
         this.dispose();
 
         vistamc = new VistaMotivoConsulta();
 
         vistamc.setVisible(true);
-        
+        vistamc.txtFechaRegistro.setText(nprec.getFechaRegistro());
+
+        vistamc.txtNumCedula.setText(nprec.getNumCedula());
+
+        vistamc.txtNombres.setText(nprec.getNombres());
+
         vistamc.txtApellidos.setText(nprec.getApellidos());
+
+        vistamc.txtEdad.setText(nprec.getFechaNacimiento());
+
+        vistamc.txtSexo.setText(nprec.getSexo());
+        vistamc.txtEstadoCivil.setText(nprec.getEstadoCivil());
+
+        vistamc.txtInstruccion.setText(nprec.getInstruccion());
+
+        vistamc.txtDireccion.setText(nprec.getDireccion());
+
+        vistamc.txtTef1.setText(nprec.getNumTelefono1());
+        vistamc.txtTef2.setText(nprec.getNumTelefono2());
+
+        vistamc.txtCorreo.setText(nprec.getCorreo());
+        
+        
+     
     }
 
     public void modeloTabla() {

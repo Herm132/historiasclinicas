@@ -9,12 +9,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Font;
-import java.util.ArrayList;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import modelo.Consulta;
-import modelo.Paciente;
 
 /**
  *
@@ -28,7 +29,6 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
     public VistaMotivoConsulta() {
         initComponents();
-//llenarLabels();
 
         ImageIcon icono = new ImageIcon(getClass().getResource("/Imagenes/Logo.png"));
 
@@ -54,6 +54,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         setCustomCursor(jLabelBuscar);
         setCustomCursor(jLabelInicio);
         setCustomCursor(jLabelNPaciente);
+        setCustomCursor(txtCorreo);
         modeloTabla();
 
         JTableHeader encabezado = this.jTableDatos.getTableHeader();
@@ -66,11 +67,10 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         this.jTableDatos.getTableHeader().setReorderingAllowed(false);
     }
 
-    public void llenarLabel(){
-    
-    
-    
+    public void llenarLabel() {
+
     }
+
     public void mensaje() {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que quieres salir?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
@@ -120,7 +120,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
                 int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
                 String identificador = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
-                
+
 //               
 //                for (Paciente paciente : pacientes) {
 //                    System.out.println("Cédula: " + paciente.getNumCedula());
@@ -128,7 +128,6 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 //                    System.out.println("Apellidos: " + paciente.getApellidos());
 //                    // Muestra aquí los otros atributos de la clase Paciente
 //                }
-
             }
 
             @Override
@@ -357,6 +356,11 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
         txtCorreo.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtCorreo.setText("Correo");
+        txtCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtCorreoMouseClicked(evt);
+            }
+        });
 
         txtTef2.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtTef2.setText("Teléfono 2");
@@ -419,16 +423,15 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                                     .addComponent(jLabel10)
                                     .addComponent(jLabel9))
                                 .addGap(27, 27, 27)
-                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtEdad)
-                                    .addComponent(txtInstruccion)
-                                    .addComponent(txtSexo)
-                                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtNumCedula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtNombres, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtFechaRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
+                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtNumCedula, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(txtSexo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtInstruccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtEdad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtNombres, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtFechaRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(128, 128, 128)
                         .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -438,13 +441,11 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                             .addComponent(jLabel14))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtEstadoCivil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtDireccion)
-                                .addComponent(txtTef1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtTef2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 155, Short.MAX_VALUE))
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtTef2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtTef1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtEstadoCivil, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                            .addComponent(txtDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -589,6 +590,16 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void txtCorreoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMouseClicked
+        // Copiar el texto en el portapapeles
+        StringSelection stringSelection = new StringSelection(txtCorreo.getText());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+
+        // Mostrar mensaje al usuario
+        JOptionPane.showMessageDialog(null, "Correo copiado al portapapeles");
+    }//GEN-LAST:event_txtCorreoMouseClicked
 
     /**
      * @param args the command line arguments

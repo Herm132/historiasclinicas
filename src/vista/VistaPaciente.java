@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import modelo.Consulta;
-import modelo.Paciente;
 import modelo.Sesion;
 
 /**
@@ -24,9 +23,6 @@ public final class VistaPaciente extends javax.swing.JFrame {
 
     private final VistaNuevoPacientexzxcx vistaNP = new VistaNuevoPacientexzxcx();
     private VistaInicio vistaI = null;
-    private Consulta consulta = null;
-    private Paciente paciente =null;
-    private Sesion sesion =null;
     
  
     public VistaPaciente() {
@@ -70,10 +66,12 @@ public final class VistaPaciente extends javax.swing.JFrame {
 
     public static void setCustomCursor(JLabel label) {
         label.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseEntered(MouseEvent e) {
                 label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
 
+            @Override
             public void mouseExited(MouseEvent e) {
                 label.setCursor(Cursor.getDefaultCursor());
             }
@@ -424,8 +422,8 @@ public final class VistaPaciente extends javax.swing.JFrame {
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
         // Obtén el contenido del JTextArea
         String contenido = jTextAreaHistoria.getText();
-        consulta = new Consulta();
-        sesion= new Sesion(WIDTH, ICONIFIED, contenido, contenido);
+        new Consulta();
+        new Sesion(WIDTH, ICONIFIED, contenido, contenido);
 //        consulta.guardarCita(contenido);
 
 
