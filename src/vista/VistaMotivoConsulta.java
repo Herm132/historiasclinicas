@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import modelo.Consulta;
+import modelo.Paciente;
 
 /**
  *
@@ -107,7 +108,10 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
         modelo.addColumn("Motivo de Consulta");
         modelo.addColumn("Acciones");
-        consulta.listaPacientes(modelo);
+        Paciente nprec = new Paciente();
+        consulta.motivoConsultaPaciente(nprec.getNumCedula(), modelo);
+        System.out.println( txtNumCedula.getText());
+       
 
         this.jTableDatos.setModel(modelo);
 
@@ -296,6 +300,11 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jButton1.setText("Agregar Nuevo Motivo de Consulta");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel13.setText("Teléfono 1");
@@ -343,7 +352,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         txtNombres.setText("Nombres");
 
         txtNumCedula.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        txtNumCedula.setText("Número de Cédula ");
+        txtNumCedula.setText("  ");
 
         txtEdad.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtEdad.setText("Edad");
@@ -600,6 +609,10 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         // Mostrar mensaje al usuario
         JOptionPane.showMessageDialog(null, "Correo copiado al portapapeles");
     }//GEN-LAST:event_txtCorreoMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+//        consulta.
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments

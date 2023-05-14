@@ -15,32 +15,32 @@ public class Consulta extends Conexion {
 
     private ResultSet rs = null;
     private PreparedStatement ps = null;
+    
 
-    public void idPacienteCedula(String numCedula) {
 
-        Connection con = establecerConexion();
-        String sql = "SELECT \"id_Paciente\" \n"
-                + "FROM paciente\n"
-                + "WHERE \"num_Cedula\"='" + numCedula + "'";
-
-    }
-
-    public void motivoConsulta() {
+    public void motivoConsultaPaciente(String numCedula,DefaultTableModel modelo) {
         Connection con = establecerConexion();
 
-        String sql = "INSERT INTO public.sesion(\n"
-                + "\"id_Paciente\", \"id_Mconsulta\", \"fecha_Sesion\", descripcion)\n"
-                + "	VALUES (?, ?, ?, ?);";
+        String sql = "SELECT m.\"motivo_Consulta\"\n" +
+        "FROM sesion s\n" +
+        "JOIN paciente p ON s.\"id_Paciente\" = p.\"id_Paciente\"\n" +
+        "JOIN mconsulta m ON s.\"id_Mconsulta\" = m.\"id_Mconsulta\"\n" +
+        "WHERE p.\"num_Cedula\" = '"+numCedula+"'";
 
         try {
 
             ps = con.prepareStatement(sql);
-            ps.setInt(1, secion.getIdPaciente());
-            ps.setInt(2, secion.getIdMConsulta());
-            ps.setString(3, secion.getFecha());
-            ps.setString(4, contenido);
+            rs = ps.executeQuery();
+            ResultSetMetaData resultado = rs.getMetaData();
+            int cantidadColumnas = resultado.getColumnCount();
+            while (rs.next()) {
+                Object[] filas = new Object[cantidadColumnas];
 
-            ps.executeUpdate();
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    filas[i] = rs.getObject(i + 1);
+                }
+                modelo.addRow(filas);
+            }
 
         } catch (SQLException e) {
             System.err.println(e);

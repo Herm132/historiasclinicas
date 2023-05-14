@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import controlador.Controlador;
 import java.awt.Font;
 import javax.swing.ImageIcon;
-import javax.swing.*;
+
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -107,6 +107,7 @@ public final class VistaInicio extends javax.swing.JFrame {
         vistamc = new VistaMotivoConsulta();
 
         vistamc.setVisible(true);
+        modeloTabla2(vistamc, identificador);
         vistamc.txtFechaRegistro.setText(nprec.getFechaRegistro());
 
         vistamc.txtNumCedula.setText(nprec.getNumCedula());
@@ -130,7 +131,43 @@ public final class VistaInicio extends javax.swing.JFrame {
         vistamc.txtCorreo.setText(nprec.getCorreo());
         
         
+        
+        
      
+    }
+    
+        public void modeloTabla2(VistaMotivoConsulta vmc,String identificador) {
+        DefaultTableModel modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Permitir la edición solo en la columna de "Acciones" (columna 3)
+                return column == 1;
+            }
+        };
+
+        modelo.addColumn("Motivo de Consulta");
+        modelo.addColumn("Acciones");
+
+        consulta.motivoConsultaPaciente(identificador, modelo);
+
+       
+
+        vmc.jTableDatos.setModel(modelo);
+
+        TablaEventos event = new TablaEventos() {
+            @Override
+            public void onEdit(int row) {
+               
+            }
+
+            @Override
+            public void onView(int row) {
+                System.out.println("View row : " + row);
+            }
+        };
+
+        vmc.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender());
+        vmc.jTableDatos.getColumnModel().getColumn(1).setCellEditor(new CeldaEditor(event));
     }
 
     public void modeloTabla() {
