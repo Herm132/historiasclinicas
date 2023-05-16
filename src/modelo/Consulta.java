@@ -15,17 +15,16 @@ public class Consulta extends Conexion {
 
     private ResultSet rs = null;
     private PreparedStatement ps = null;
-    
+    Connection con = null;
 
-
-    public void motivoConsultaPaciente(String numCedula,DefaultTableModel modelo) {
+    public void motivoConsultaPaciente(String numCedula, DefaultTableModel modelo) {
         Connection con = establecerConexion();
 
-        String sql = "SELECT m.\"motivo_Consulta\"\n" +
-        "FROM sesion s\n" +
-        "JOIN paciente p ON s.\"id_Paciente\" = p.\"id_Paciente\"\n" +
-        "JOIN mconsulta m ON s.\"id_Mconsulta\" = m.\"id_Mconsulta\"\n" +
-        "WHERE p.\"num_Cedula\" = '"+numCedula+"'";
+        String sql = "SELECT m.\"motivo_Consulta\"\n"
+                + "FROM sesion s\n"
+                + "JOIN paciente p ON s.\"id_Paciente\" = p.\"id_Paciente\"\n"
+                + "JOIN mconsulta m ON s.\"id_Mconsulta\" = m.\"id_Mconsulta\"\n"
+                + "WHERE p.\"num_Cedula\" = '" + numCedula + "'";
 
         try {
 
@@ -243,43 +242,52 @@ public class Consulta extends Conexion {
 
     }
 
-//    public Persona buscarPersona(String cedula) {
-//
-//        Persona encontro = new Persona();
-//
-//        for (Persona x : listapersonas) {
-//            if (cedula.equalsIgnoreCase(x.getCedula())) {
-//                encontro = x;
-//            }
-//        }
-//
-//        return encontro;
-//    }
-//
-    public int obtenerIdPaciente() {
-        int resultado = 0;
+    public int obtenerIdPaciente(String cedula) {
+        int id = 0;
+        con = establecerConexion();
+
         try {
-            Connection con = establecerConexion();
-            String sql = "SELECT * FROM paciente";
-            PreparedStatement statement = con.prepareStatement(sql);
-            ResultSet r = statement.executeQuery();
-            while (r.next()) {
-                resultado++;
+
+            String sql = "SELECT \"id_Paciente\" FROM paciente WHERE \"num_Cedula\"= ?";
+
+            ps = con.prepareStatement(sql);
+            ps.setString(1, cedula);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt("id_Paciente");
+
+                return id;
+            } else {
+                System.out.println("No se encontró ningún ID para la cédula ingresada.");
+                return id;
             }
 
         } catch (SQLException e) {
-            System.out.println("Error: " + e);
+            System.err.println(e);
+            return 0;
+
+        } finally {
+            try {
+                con.close();
+
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
 
         }
-        return resultado + 1;
-    }
-//
-//    public ArrayList<Persona> getListapersonas() {
-//        return listapersonas;
-//    }
-//
-//    public void setListapersonas(ArrayList<Persona> listapersonas) {
-//        this.listapersonas = listapersonas;
-//    }
 
+    }
+
+    public int idConsulta() {
+
+        int idConsulta = 0;
+        //el id de la consulta es iguial al que se creo o es el que se selecciono
+        return idConsulta;
+
+    }
+
+    public void crearSesion(Sesion sesion) {
+    //Ens base a laos datos ontenidos de la vista se crea la sesion como eol idpaciente,consulta fecha, descripcion    
+    }
 }

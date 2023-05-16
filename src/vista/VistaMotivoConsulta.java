@@ -12,11 +12,14 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import modelo.Consulta;
 import modelo.Paciente;
+import modelo.Sesion;
 
 /**
  *
@@ -56,8 +59,6 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         setCustomCursor(jLabelInicio);
         setCustomCursor(jLabelNPaciente);
         setCustomCursor(txtCorreo);
-
-
 
     }
 
@@ -549,7 +550,34 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCorreoMouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-//        consulta.
+
+        DefaultTableModel modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Permitir la edición solo en la columna de "Acciones" (columna 3)
+                return column == 1;
+            }
+        };
+
+        modelo.addColumn("Motivo de Consulta");
+        modelo.addColumn("Acciones");
+
+      consulta.motivoConsultaPaciente(txtNumCedula.getText(), modelo);
+
+        this.jTableDatos.setModel(modelo);
+        
+                LocalDate fechaActual = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fechaActualTexto = fechaActual.format(formato);
+        
+        if (false) {
+            
+            //Crear motivo consulta en base al id pero si ya existe notifique con una ventana 
+            String contenido = " ";
+            Sesion sesion = new Sesion(consulta.obtenerIdPaciente(txtNumCedula.getText()), consulta.idConsulta(),contenido, fechaActualTexto);
+            consulta.crearSesion(sesion);
+        }
+    
     }//GEN-LAST:event_jButton1MouseClicked
 
     /**

@@ -23,9 +23,12 @@ public final class VistaPaciente extends javax.swing.JFrame {
 
     private final VistaNuevoPacientexzxcx vistaNP = new VistaNuevoPacientexzxcx();
     private VistaInicio vistaI = null;
-    
- 
+    Consulta consulta = null;
+    Sesion sesion = null;
+
     public VistaPaciente() {
+         System.setProperty("console.encoding", "UTF-8");
+
         initComponents();
 
         ImageIcon icono = new ImageIcon(getClass().getResource("/Imagenes/Logo.png"));
@@ -52,6 +55,8 @@ public final class VistaPaciente extends javax.swing.JFrame {
         setCustomCursor(jLabelBuscar);
         setCustomCursor(jLabelInicio);
         setCustomCursor(jLabelNPaciente);
+
+        System.out.println("");
 
     }
 
@@ -110,6 +115,8 @@ public final class VistaPaciente extends javax.swing.JFrame {
         btnNFecha = new javax.swing.JButton();
         txtMConsulta = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        txtCedula = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -248,6 +255,12 @@ public final class VistaPaciente extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel6.setText("Motivo de consulta");
 
+        jLabel11.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jLabel11.setText("Cédula");
+
+        txtCedula.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtCedula.setText("Cedula");
+
         javax.swing.GroupLayout fondoLayout = new javax.swing.GroupLayout(fondo);
         fondo.setLayout(fondoLayout);
         fondoLayout.setHorizontalGroup(
@@ -277,35 +290,38 @@ public final class VistaPaciente extends javax.swing.JFrame {
                     .addGroup(fondoLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
                             .addGroup(fondoLayout.createSequentialGroup()
                                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(fondoLayout.createSequentialGroup()
-                                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addGroup(fondoLayout.createSequentialGroup()
-                                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel3)
-                                                    .addComponent(jLabel4))
-                                                .addGap(159, 159, 159)
-                                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(txtEdad))))
-                                        .addGap(123, 123, 123)
-                                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel9)
-                                            .addComponent(jLabel10))
-                                        .addGap(68, 68, 68)
-                                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtInstruccion)
-                                            .addComponent(txtSexo)))
+                                    .addComponent(jScrollPane1)
                                     .addGroup(fondoLayout.createSequentialGroup()
                                         .addComponent(jLabel6)
                                         .addGap(18, 18, 18)
-                                        .addComponent(txtMConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 143, Short.MAX_VALUE)))
-                        .addContainerGap())
+                                        .addComponent(txtMConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 172, Short.MAX_VALUE)))
+                                .addContainerGap())
+                            .addGroup(fondoLayout.createSequentialGroup()
+                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addGroup(fondoLayout.createSequentialGroup()
+                                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel4))
+                                        .addGap(159, 159, 159)
+                                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtEdad))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel11))
+                                .addGap(68, 68, 68)
+                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCedula)
+                                    .addComponent(txtInstruccion)
+                                    .addComponent(txtSexo))
+                                .addGap(140, 140, 140))))
                     .addGroup(fondoLayout.createSequentialGroup()
                         .addGap(61, 61, 61)
                         .addComponent(btnNFecha)
@@ -347,27 +363,29 @@ public final class VistaPaciente extends javax.swing.JFrame {
                     .addGroup(fondoLayout.createSequentialGroup()
                         .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(fondoLayout.createSequentialGroup()
-                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel9)
+                                    .addComponent(txtSexo)))
+                            .addGroup(fondoLayout.createSequentialGroup()
+                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtNombres)
-                                    .addGroup(fondoLayout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel3)
-                                            .addComponent(txtApellidos))))
+                                    .addComponent(jLabel11)
+                                    .addComponent(txtCedula))
                                 .addGap(12, 12, 12)
                                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
-                                    .addComponent(txtEdad)))
-                            .addGroup(fondoLayout.createSequentialGroup()
-                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel9)
-                                    .addComponent(txtSexo))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel10)
-                                    .addComponent(txtInstruccion))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                                    .addComponent(txtEdad))))
+                        .addGap(18, 18, 18)
+                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel10)
+                                .addComponent(txtInstruccion))
+                            .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel3)
+                                .addComponent(txtApellidos)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                         .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnNFecha)
                             .addComponent(btnGuardar))
@@ -429,10 +447,18 @@ public final class VistaPaciente extends javax.swing.JFrame {
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
         // Obtén el contenido del JTextArea
         String contenido = jTextAreaHistoria.getText();
-        new Consulta();
-        new Sesion(WIDTH, ICONIFIED, contenido, contenido);
-//        consulta.guardarCita(contenido);
+        consulta = new Consulta();
+        LocalDate fechaActual = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fechaActualTexto = fechaActual.format(formato);
+        
 
+   
+
+        sesion=new Sesion(consulta.obtenerIdPaciente(txtCedula.getText()), 1, contenido, fechaActualTexto);
+        System.out.println(sesion.toString());
+
+//        consulta.guardarCita(sesion, contenido);
 
     }//GEN-LAST:event_btnGuardarMouseClicked
 
@@ -498,6 +524,7 @@ public final class VistaPaciente extends javax.swing.JFrame {
     public javax.swing.JLabel btnSalir;
     private javax.swing.JPanel fondo;
     public javax.swing.JLabel jLabel10;
+    public javax.swing.JLabel jLabel11;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;
     public javax.swing.JLabel jLabel4;
@@ -513,6 +540,7 @@ public final class VistaPaciente extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextAreaHistoria;
     public javax.swing.JLabel txtApellidos;
+    public javax.swing.JLabel txtCedula;
     public javax.swing.JLabel txtEdad;
     public javax.swing.JLabel txtInstruccion;
     public javax.swing.JLabel txtMConsulta;

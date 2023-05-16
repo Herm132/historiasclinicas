@@ -48,6 +48,11 @@ public class Sesion {
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
+
+    @Override
+    public String toString() {
+        return "Sesion{" + "idPaciente=" + idPaciente + ", idMConsulta=" + idMConsulta + ", descripcion=" + descripcion + ", fecha=" + fecha + '}';
+    }
     
     
     

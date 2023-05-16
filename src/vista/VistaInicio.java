@@ -187,7 +187,12 @@ public final class VistaInicio extends javax.swing.JFrame {
                 nprec = new Paciente();
                 consulta = new Consulta();
                 nprec = consulta.buscarPacineteID(identificador);
+                
+                vistap.txtCedula.setText(identificador);
+                
+                
                 vistap.txtNombres.setText(nprec.getNombres());
+                
                 vistap.txtApellidos.setText(nprec.getApellidos());
                 vistap.txtEdad.setText(calularAnios(nprec.getFechaNacimiento()));
                 vistap.txtSexo.setText(nprec.getSexo());
