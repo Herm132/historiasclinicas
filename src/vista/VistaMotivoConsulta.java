@@ -36,7 +36,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         this.setIconImage(icono.getImage());
 
         this.setVisible(true);
-        this.setTitle("Inicio");
+        this.setTitle("Motivo Consulta");
         this.setLocationRelativeTo(null);
 
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -56,19 +56,8 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         setCustomCursor(jLabelInicio);
         setCustomCursor(jLabelNPaciente);
         setCustomCursor(txtCorreo);
-        modeloTabla();
 
-        JTableHeader encabezado = this.jTableDatos.getTableHeader();
-        encabezado.setFont(new Font("Roboto", Font.BOLD, 14)); // Tipo de letra: Arial, Negrita, Tamaño: 16
 
-        // Establecer la instancia de JTableHeader en la tabla
-        this.jTableDatos.setTableHeader(encabezado);
-
-        // Deshabilitar el movimiento de columnas
-        this.jTableDatos.getTableHeader().setReorderingAllowed(false);
-    }
-
-    public void llenarLabel() {
 
     }
 
@@ -91,57 +80,6 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                 label.setCursor(Cursor.getDefaultCursor());
             }
         });
-    }
-
-    public void cargarDatosPaciente() {
-
-    }
-
-    public void modeloTabla() {
-        DefaultTableModel modelo = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                // Permitir la edición solo en la columna de "Acciones" (columna 3)
-                return column == 1;
-            }
-        };
-
-        modelo.addColumn("Motivo de Consulta");
-        modelo.addColumn("Acciones");
-        Paciente nprec = new Paciente();
-        consulta.motivoConsultaPaciente(nprec.getNumCedula(), modelo);
-        System.out.println( txtNumCedula.getText());
-       
-
-        this.jTableDatos.setModel(modelo);
-
-        TablaEventos event = new TablaEventos() {
-            @Override
-            public void onEdit(int row) {
-                // Obtener el índice de la columna "num_Cedula"
-                int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
-
-// Obtener el valor de la celda seleccionada en la columna "num_Cedula"
-                int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
-                String identificador = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
-
-//               
-//                for (Paciente paciente : pacientes) {
-//                    System.out.println("Cédula: " + paciente.getNumCedula());
-//                    System.out.println("Nombres: " + paciente.getNombres());
-//                    System.out.println("Apellidos: " + paciente.getApellidos());
-//                    // Muestra aquí los otros atributos de la clase Paciente
-//                }
-            }
-
-            @Override
-            public void onView(int row) {
-                System.out.println("View row : " + row);
-            }
-        };
-
-        this.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender());
-        this.jTableDatos.getColumnModel().getColumn(1).setCellEditor(new CeldaEditor(event));
     }
 
     @SuppressWarnings("unchecked")
