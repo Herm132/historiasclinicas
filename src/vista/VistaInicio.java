@@ -24,7 +24,7 @@ import modelo.Paciente;
  */
 public final class VistaInicio extends javax.swing.JFrame {
 
-    private VistaNuevoPacientexzxcx vistanp = null;
+    private VistaNuevoPaciente vistanp = null;
     private VistaMotivoConsulta vistamc = null;
     private Consulta consulta = null;
     Paciente nprec = null;

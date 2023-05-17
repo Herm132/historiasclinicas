@@ -5,8 +5,9 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import modelo.Consulta;
-import modelo.Paciente;
-import vista.VistaNuevoPacientexzxcx;
+
+import vista.VistaNuevoPaciente;
+
 
 /**
  *
@@ -15,9 +16,9 @@ import vista.VistaNuevoPacientexzxcx;
 public class Controlador implements ActionListener {
 
     private final Consulta consulta;
-    private final VistaNuevoPacientexzxcx vNuevoPaciente;
+    private final VistaNuevoPaciente vNuevoPaciente;
 
-    public Controlador(Consulta consulta, VistaNuevoPacientexzxcx vNuevoPaciente) {
+    public Controlador(Consulta consulta, VistaNuevoPaciente vNuevoPaciente) {
         this.consulta = consulta;
 
         this.vNuevoPaciente = vNuevoPaciente;
@@ -50,34 +51,7 @@ public class Controlador implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Paciente aux;
-        if (e.getSource() == vNuevoPaciente.jButtonGuardar) {
 
-            aux = new Paciente(
-                    vNuevoPaciente.jTextNumCedula.getText(),
-                    vNuevoPaciente.jTextNombres.getText(),
-                    vNuevoPaciente.jTextApellido.getText(),
-                    formatoFecha(vNuevoPaciente.jDateFechaNaci.getDate()),
-                    vNuevoPaciente.jComboBoxSexo.getSelectedItem().toString(),
-                    vNuevoPaciente.jComboBoxInstruccion.getSelectedItem().toString(),
-                    vNuevoPaciente.jComboBoxEstadoCivil.getSelectedItem().toString(),
-                    vNuevoPaciente.jTextDireccion.getText(),
-                    vNuevoPaciente.jTextTelefono1.getText(),
-                    vNuevoPaciente.jTextTelefono2.getText(),
-                    vNuevoPaciente.jTextCorreo.getText(),
-                    fechaActual());
-            
-
-
-            if (consulta.agregarPaciente(aux)) {
-
-                //Ocultar y contrar a otra vista
-            }else{
-            
-                    
-            }
-
-        }
 
     }
 

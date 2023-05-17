@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -228,8 +229,8 @@ public class Consulta extends Conexion {
             return true;
 
         } catch (SQLException e) {
-            System.err.println(e);
-            return false;
+            System.out.println(e);
+      return false;
 
         } finally {
             try {

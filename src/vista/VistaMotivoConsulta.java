@@ -27,7 +27,7 @@ import modelo.Sesion;
  */
 public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
-    private final VistaNuevoPacientexzxcx vistaNP = null;
+    private final VistaNuevoPaciente vistaNP = null;
     private VistaInicio vistaI = null;
     private final Consulta consulta = new Consulta();
 

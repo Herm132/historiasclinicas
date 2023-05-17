@@ -21,7 +21,7 @@ import modelo.Consulta;
  */
 public final class VistaBusqueda extends javax.swing.JFrame {
 
-    private VistaNuevoPacientexzxcx vistanp = new VistaNuevoPacientexzxcx();
+    private VistaNuevoPaciente vistanp = new VistaNuevoPaciente();
     private Controlador contr;
     private final Consulta consulta = new Consulta();
 
