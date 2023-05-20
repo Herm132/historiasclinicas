@@ -21,9 +21,8 @@ import modelo.Consulta;
  */
 public final class VistaBusqueda extends javax.swing.JFrame {
 
-    private VistaNuevoPaciente vistanp = new VistaNuevoPaciente();
-    private Controlador contr;
-    private final Consulta consulta = new Consulta();
+    private VistaNuevoPaciente vistanp = null;
+    private Consulta consulta = null;
 
     public VistaBusqueda() {
         initComponents();
@@ -98,14 +97,15 @@ public final class VistaBusqueda extends javax.swing.JFrame {
         modelo.addColumn("Nombres");
         modelo.addColumn("Apellidos");
         modelo.addColumn("Acciones");
+        consulta = new Consulta();
         consulta.busquedaPacientes(modelo, txtBuscar.getText());
 
         this.jTableDatos.setModel(modelo);
         TablaEventos event = new TablaEventos() {
-            @Override
-            public void onEdit(int row) {
-                System.out.println("Edit row : " + row);
-            }
+//            @Override
+//            public void onEdit(int row) {
+//                System.out.println("Edit row : " + row);
+//            }
 
             @Override
             public void onView(int row) {
@@ -245,8 +245,18 @@ public final class VistaBusqueda extends javax.swing.JFrame {
 
         jLabelBuscar.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabelBuscar.setText("Buscar");
+        jLabelBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelBuscarMouseClicked(evt);
+            }
+        });
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search20x20.png"))); // NOI18N
+        btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarMouseClicked(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel9.setText("Ingrese  Nombre, Apellido o Número  de Cédula :");
@@ -255,6 +265,11 @@ public final class VistaBusqueda extends javax.swing.JFrame {
         txtBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtBuscarActionPerformed(evt);
+            }
+        });
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyPressed(evt);
             }
         });
 
@@ -307,15 +322,19 @@ public final class VistaBusqueda extends javax.swing.JFrame {
             fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fondoLayout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
-                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(fondoLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel9)
+                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnBuscarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(fondoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel9)
-                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(btnBuscarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabelInicio)))
+                            .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelInicio))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(fondoLayout.createSequentialGroup()
@@ -372,7 +391,7 @@ public final class VistaBusqueda extends javax.swing.JFrame {
     private void jLabelNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelNPacienteMouseClicked
 
         this.dispose();
-
+        vistanp = new VistaNuevoPaciente();
         vistanp.setVisible(true);
 
 
@@ -380,7 +399,7 @@ public final class VistaBusqueda extends javax.swing.JFrame {
 
     private void btnNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNPacienteMouseClicked
         this.dispose();
-
+        vistanp = new VistaNuevoPaciente();
         vistanp.setVisible(true);
     }//GEN-LAST:event_btnNPacienteMouseClicked
 
@@ -391,6 +410,25 @@ public final class VistaBusqueda extends javax.swing.JFrame {
     private void btnBuscarPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarPacienteMouseClicked
         modeloTabla();
     }//GEN-LAST:event_btnBuscarPacienteMouseClicked
+
+    private void jLabelBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelBuscarMouseClicked
+        this.dispose();
+        this.setVisible(true);
+    }//GEN-LAST:event_jLabelBuscarMouseClicked
+
+    private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
+        this.dispose();
+        this.setVisible(true);
+    }//GEN-LAST:event_btnBuscarMouseClicked
+
+    private void txtBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyPressed
+
+        if (evt.getKeyCode() == evt.VK_ENTER || evt.getKeyCode() == evt.VK_SPACE) {
+            modeloTabla();
+        } 
+
+
+    }//GEN-LAST:event_txtBuscarKeyPressed
 
     /**
      * @param args the command line arguments

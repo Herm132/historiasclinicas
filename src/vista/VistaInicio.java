@@ -178,8 +178,8 @@ public final class VistaInicio extends javax.swing.JFrame {
 
         TablaEventos event = new TablaEventos() {
             @Override
-            public void onEdit(int row) {
-                vmc.dispose();
+            public void onView(int row) {
+                               vmc.dispose();
 
                 consulta = new Consulta();
                 int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
@@ -210,12 +210,6 @@ public final class VistaInicio extends javax.swing.JFrame {
                 vistap.txtSexo.setText(nprec.getSexo());
                 vistap.txtInstruccion.setText(nprec.getInstruccion());
                 vistap.txtMConsulta.setText(mConsulta);
-
-            }
-
-            @Override
-            public void onView(int row) {
-                System.out.println("Ver");
             }
         };
         vmc.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender());
@@ -250,14 +244,10 @@ public final class VistaInicio extends javax.swing.JFrame {
         this.jTableDatos.setModel(modelo);
 
         TablaEventos event = new TablaEventos() {
-            @Override
-            public void onEdit(int row) {
-                btnEditar();
-            }
 
             @Override
             public void onView(int row) {
-                System.out.println("Ver");
+                  btnEditar();
             }
         };
 
@@ -496,7 +486,6 @@ public final class VistaInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInicioMouseClicked
 
     private void jLabelNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelNPacienteMouseClicked
-
         this.dispose();
         vistanp = new VistaNuevoPaciente();
         vistanp.setVisible(true);
@@ -521,15 +510,7 @@ public final class VistaInicio extends javax.swing.JFrame {
         vistab.setVisible(true);
     }//GEN-LAST:event_btnBuscarMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

@@ -5,7 +5,7 @@ package vista;
  */
 public interface TablaEventos {
 
-    public void onEdit(int row);
+//    public void onEdit(int row);
 
     public void onView(int row);
 }

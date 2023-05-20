@@ -1,16 +1,12 @@
 package vista;
 
-import com.sun.source.tree.BreakTree;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,6 +23,7 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
     private VistaInicio vistaI = null;
     private Consulta consulta = null;
     private Paciente aux = null;
+    private VistaBusqueda vistab = null;
 
     public VistaNuevoPaciente() {
         System.setProperty("console.encoding", "UTF-8");
@@ -119,7 +116,10 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
                     fechaActual());
 
             consulta.agregarPaciente(aux);
+            JOptionPane.showMessageDialog(null, "El paciente se ingreso correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
+            vistaI = new VistaInicio();
+            vistaI.setVisible(true);
         } catch (Exception e) {
             mensajeVacio("FECHA NACIMIENTO");
 
@@ -127,11 +127,11 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
     }
 
     private void mensajeVacio(String texto) {
-        JOptionPane.showMessageDialog(null, "El campos " + texto + " vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, "El campo " + texto + " esta vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
     }
 
     private boolean cedulaDuplicada(String cedula) {
-            return consulta.cadulaRepetida(cedula);
+        return consulta.cadulaRepetida(cedula);
     }
 
     @SuppressWarnings("unchecked")
@@ -254,55 +254,40 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
 
         jLabelBuscar.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabelBuscar.setText("Buscar");
+        jLabelBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelBuscarMouseClicked(evt);
+            }
+        });
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search20x20.png"))); // NOI18N
+        btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarMouseClicked(evt);
+            }
+        });
 
         jLabel16.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel16.setText("Fecha de Registro");
 
         jTextNumCedula.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        jTextNumCedula.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextNumCedulaActionPerformed(evt);
-            }
-        });
 
         jTextApellido.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        jTextApellido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextApellidoActionPerformed(evt);
-            }
-        });
 
         jComboBoxSexo.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jComboBoxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino" }));
-        jComboBoxSexo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxSexoActionPerformed(evt);
-            }
-        });
 
         jComboBoxInstruccion.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jComboBoxInstruccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sin estudios", "Básico", "Bachillerato", "Tecnoligia/Universitario", "Maestria", "Doctorado" }));
 
         jComboBoxEstadoCivil.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jComboBoxEstadoCivil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Soltero/a.", "Casado/a.", "Unión libre/de hecho.", "Separado/a.", "Divorciado/a.", "Viudo/a." }));
-        jComboBoxEstadoCivil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxEstadoCivilActionPerformed(evt);
-            }
-        });
 
         jTextDireccion.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
 
         jTextTelefono1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
 
         jTextTelefono2.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        jTextTelefono2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextTelefono2ActionPerformed(evt);
-            }
-        });
 
         jTextCorreo.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
 
@@ -561,26 +546,6 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
         mensaje();
     }//GEN-LAST:event_jLabelSalirMouseClicked
 
-    private void jTextNumCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextNumCedulaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextNumCedulaActionPerformed
-
-    private void jTextApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextApellidoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextApellidoActionPerformed
-
-    private void jComboBoxSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSexoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxSexoActionPerformed
-
-    private void jComboBoxEstadoCivilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxEstadoCivilActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxEstadoCivilActionPerformed
-
-    private void jTextTelefono2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextTelefono2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextTelefono2ActionPerformed
-
     private void jButtonGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonGuardarMouseClicked
         consulta = new Consulta();
 
@@ -600,25 +565,30 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
         } else if ("".equals(jTextTelefono1.getText())) {
 
             mensajeVacio("TELÉFONO 1");
-        } else if(cedulaDuplicada(jTextNumCedula.getText())) {
-                mensajeVacio(String.format("%s es repetida", jTextNumCedula.getText()));
-        }else
-        {
-                    insertarPersona();
-                    vistaI=new VistaInicio();
-                    vistaI.setVisible(true);
+        } else if (cedulaDuplicada(jTextNumCedula.getText())) {
+            JOptionPane.showMessageDialog(null, "La cédula ingresada ya existe.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+
+        } else {
+            insertarPersona();
+
         }
-        
-        
-        
-        
-//If else o COmplete los campos 
+
 
     }//GEN-LAST:event_jButtonGuardarMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
+    private void jLabelBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelBuscarMouseClicked
+        this.dispose();
+
+        vistab = new VistaBusqueda();
+        vistab.setVisible(true);
+    }//GEN-LAST:event_jLabelBuscarMouseClicked
+
+    private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
+        this.dispose();
+        vistab = new VistaBusqueda();
+        vistab.setVisible(true);
+    }//GEN-LAST:event_btnBuscarMouseClicked
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

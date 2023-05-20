@@ -64,6 +64,9 @@ public class Inicio {
                
                 if (counter == 10) {
                     jFrame.dispose();
+                    VistaInicio vi = new VistaInicio();
+                    vi.setVisible(true);
+                    
                 }
             }
         });

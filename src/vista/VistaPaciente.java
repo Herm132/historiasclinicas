@@ -23,16 +23,14 @@ public final class VistaPaciente extends javax.swing.JFrame {
 
     private VistaNuevoPaciente vistaNP = null;
     private VistaInicio vistaI = null;
-    Consulta consulta = null;
-    Sesion sesion = null;
+    private Consulta consulta = null;
+    private Sesion sesion = null;
+    private VistaBusqueda vistab = null;
 
     public VistaPaciente() {
         initComponents();
-        consulta=new Consulta();
+        consulta = new Consulta();
 
-
-        
-        
         System.setProperty("console.encoding", "UTF-8");
 
         jIdMconsulta.setVisible(false);
@@ -72,6 +70,39 @@ public final class VistaPaciente extends javax.swing.JFrame {
         if (respuesta == JOptionPane.YES_OPTION) {
 
             System.exit(0);
+        }
+    }
+
+    public void mensaje2() {
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que quieres salir de esta ventana?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            this.dispose();
+            vistaI = new VistaInicio();
+            vistaI.setVisible(true);
+
+        }
+    }
+
+    public void mensaje3() {
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que quieres salir de esta ventana?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            this.dispose();
+            vistaNP = new VistaNuevoPaciente();
+            vistaNP.setVisible(true);
+
+        }
+    }
+
+    public void mensaje4() {
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que quieres salir de esta ventana?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            this.dispose();
+            vistab = new VistaBusqueda();
+            vistab.setVisible(true);
+
         }
     }
 
@@ -202,8 +233,18 @@ public final class VistaPaciente extends javax.swing.JFrame {
 
         jLabelBuscar.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabelBuscar.setText("Buscar");
+        jLabelBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelBuscarMouseClicked(evt);
+            }
+        });
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search20x20.png"))); // NOI18N
+        btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarMouseClicked(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel2.setText("Nombres");
@@ -431,31 +472,20 @@ public final class VistaPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelSalirMouseClicked
 
     private void jLabelInicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelInicioMouseClicked
-        this.dispose();
-        vistaI = new VistaInicio();
-        vistaI.setVisible(true);
+        mensaje2();
 
     }//GEN-LAST:event_jLabelInicioMouseClicked
 
     private void btnInicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseClicked
-        this.dispose();
-        vistaI = new VistaInicio();
-        vistaI.setVisible(true);
+        mensaje2();
     }//GEN-LAST:event_btnInicioMouseClicked
 
     private void jLabelNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelNPacienteMouseClicked
-
-        this.dispose();
-
-        vistaNP.setVisible(true);
-
-
+        mensaje3();
     }//GEN-LAST:event_jLabelNPacienteMouseClicked
 
     private void btnNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNPacienteMouseClicked
-        this.dispose();
-
-        vistaNP.setVisible(true);
+        mensaje3();
     }//GEN-LAST:event_btnNPacienteMouseClicked
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
@@ -500,6 +530,14 @@ public final class VistaPaciente extends javax.swing.JFrame {
                 + "Hora: " + horaActualTexto + "\n"
                 + "Descripción: ");
     }//GEN-LAST:event_btnNFechaMouseClicked
+
+    private void jLabelBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelBuscarMouseClicked
+        mensaje4();
+    }//GEN-LAST:event_jLabelBuscarMouseClicked
+
+    private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
+        mensaje4();
+    }//GEN-LAST:event_btnBuscarMouseClicked
 
     /**
      * @param args the command line arguments

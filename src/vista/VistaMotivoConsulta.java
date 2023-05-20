@@ -29,17 +29,14 @@ import modelo.Sesion;
  */
 public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
-    private final VistaNuevoPaciente vistaNP = null;
+    private VistaNuevoPaciente vistaNP = null;
     private VistaInicio vistaI = null;
     private Consulta consulta = null;
-    private Paciente paciente = null;
     private MotivoConsulta mconsulta = null;
     private Sesion sesion = null;
     private VistaPaciente vistap = null;
     private Paciente nprec = null;
-
-    private VistaNuevoPaciente vistanp = null;
-    private VistaMotivoConsulta vistamc = null;
+    private VistaBusqueda vistab = null;
 
     public VistaMotivoConsulta() {
         initComponents();
@@ -69,6 +66,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         setCustomCursor(jLabelInicio);
         setCustomCursor(jLabelNPaciente);
         setCustomCursor(txtCorreo);
+        setCustomCursor(txtNumCedula);
 
     }
 
@@ -94,24 +92,17 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
     }
 
     private String calularAnios(String fecha) {
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
         // Convertir la cadena de fecha en un objeto LocalDate
         LocalDate fechaNacimiento = LocalDate.parse(fecha, formatter);
-
         // Obtener la fecha actual
         LocalDate fechaActual = LocalDate.now();
-
         // Calcular la diferencia entre las dos fechas
         Period periodo = Period.between(fechaNacimiento, fechaActual);
-
         // Obtener la edad actual en años
         fecha = String.valueOf(periodo.getYears());
-
         // Imprimir la edad actual
         return fecha;
-
     }
 
     public void modeloTabla() {
@@ -131,8 +122,9 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         this.jTableDatos.setModel(modelo);
 
         TablaEventos event = new TablaEventos() {
+
             @Override
-            public void onEdit(int row) {
+            public void onView(int row) {
                 dispose();
                 vistap = new VistaPaciente();
                 nprec = new Paciente();
@@ -144,31 +136,19 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                 int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
                 String mConsulta = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
 
-                //La consulta debe retornar un motivo consulta
                 mconsulta = consulta.getUltimaMConsulta();
-                vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
-                
-                
-                
-
-                vistap.setVisible(true);
 
                 nprec = consulta.buscarPacineteID(txtNumCedula.getText());
 
+                vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
+                vistap.setVisible(true);
                 vistap.txtCedula.setText(txtNumCedula.getText());
-
                 vistap.txtNombres.setText(nprec.getNombres());
-
                 vistap.txtApellidos.setText(nprec.getApellidos());
                 vistap.txtEdad.setText(calularAnios(nprec.getFechaNacimiento()));
                 vistap.txtSexo.setText(nprec.getSexo());
                 vistap.txtInstruccion.setText(nprec.getInstruccion());
                 vistap.txtMConsulta.setText(mConsulta);
-            }
-
-            @Override
-            public void onView(int row) {
-                System.out.println("Ver");
 
             }
         };
@@ -176,7 +156,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         this.jTableDatos.getColumnModel().getColumn(1).setCellEditor(new CeldaEditor(event));
 
         JTableHeader encabezado = jTableDatos.getTableHeader();
-        encabezado.setFont(new Font("Roboto", Font.BOLD, 14)); // Tipo de letra: Arial, Negrita, Tamaño: 16
+        encabezado.setFont(new Font("Roboto", Font.BOLD, 14)); // Tipo de letra: Roboto, Negrita, Tamaño: 16
 
         // Establecer la instancia de JTableHeader en la tabla
         this.jTableDatos.setTableHeader(encabezado);
@@ -336,8 +316,18 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
         jLabelBuscar.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabelBuscar.setText("Buscar");
+        jLabelBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelBuscarMouseClicked(evt);
+            }
+        });
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search20x20.png"))); // NOI18N
+        btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarMouseClicked(evt);
+            }
+        });
 
         jButton1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jButton1.setText("Agregar Nuevo Motivo de Consulta");
@@ -394,6 +384,11 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
         txtNumCedula.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtNumCedula.setText("  ");
+        txtNumCedula.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtNumCedulaMouseClicked(evt);
+            }
+        });
 
         txtEdad.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtEdad.setText("Edad");
@@ -423,12 +418,6 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
         txtEstadoCivil.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtEstadoCivil.setText("Estado Civil");
-
-        jTextMConsulta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextMConsultaActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout fondoLayout = new javax.swing.GroupLayout(fondo);
         fondo.setLayout(fondoLayout);
@@ -613,7 +602,6 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         this.dispose();
         vistaI = new VistaInicio();
         vistaI.setVisible(true);
-
     }//GEN-LAST:event_jLabelInicioMouseClicked
 
     private void btnInicioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseClicked
@@ -623,81 +611,69 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInicioMouseClicked
 
     private void jLabelNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelNPacienteMouseClicked
-
         this.dispose();
-
+        vistaNP = new VistaNuevoPaciente();
         vistaNP.setVisible(true);
-
-
     }//GEN-LAST:event_jLabelNPacienteMouseClicked
 
     private void btnNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNPacienteMouseClicked
         this.dispose();
-
+        vistaNP = new VistaNuevoPaciente();
         vistaNP.setVisible(true);
     }//GEN-LAST:event_btnNPacienteMouseClicked
-
-    private void jTextMConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextMConsultaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextMConsultaActionPerformed
 
     private void txtCorreoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMouseClicked
         // Copiar el texto en el portapapeles
         StringSelection stringSelection = new StringSelection(txtCorreo.getText());
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
-
         // Mostrar mensaje al usuario
         JOptionPane.showMessageDialog(null, "Correo copiado al portapapeles");
     }//GEN-LAST:event_txtCorreoMouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-
+        consulta = new Consulta();
         LocalDate fechaActual = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fechaActualTexto = fechaActual.format(formato);
-        consulta = new Consulta();
 
-        //insertar solo el texto y traer el ultimo insertado
         if (!"".equals(jTextMConsulta.getText())) {
             consulta.crearMConsulta(jTextMConsulta.getText());
             this.jTextMConsulta.setText("");
-
-            //La consulta debe retornar un motivo consulta
             mconsulta = consulta.getUltimaMConsulta();
 
-            //Pero si llamamos al nuevo modelo de la tabla tenemos en cuenta que no me lista el el nuevo pues no se la a asignado un paciente 
-            //creamos una nueva sesion con los valores conrrespondiwentes
             String contenido = "";
             sesion = new Sesion(consulta.obtenerIdPaciente(txtNumCedula.getText()), mconsulta.getIdMConsulta(), contenido, fechaActualTexto);
             if (consulta.crearSesion(sesion)) {
-
                 JOptionPane.showMessageDialog(null, "Se agrego Motivo Consulta correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
             }
-
             modeloTabla();
-
         } else {
             JOptionPane.showMessageDialog(null, "El MOTIVO CONSULTA esta vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
 
-//        
-//        
-//        
-//        mconsulta = new MotivoConsulta(ICONIFIED, fechaActualTexto);
-//
-//        
-//
-//        if (false) {
-//
-//            //Crear motivo consulta en base al id pero si ya existe notifique con una ventana 
-//        }
-
     }//GEN-LAST:event_jButton1MouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
+    private void jLabelBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelBuscarMouseClicked
+        this.dispose();
+        vistab = new VistaBusqueda();
+        vistab.setVisible(true);
+    }//GEN-LAST:event_jLabelBuscarMouseClicked
+
+    private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
+        this.dispose();
+        vistab = new VistaBusqueda();
+        vistab.setVisible(true);
+    }//GEN-LAST:event_btnBuscarMouseClicked
+
+    private void txtNumCedulaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNumCedulaMouseClicked
+                // Copiar el texto en el portapapeles
+        StringSelection stringSelection = new StringSelection(txtNumCedula.getText());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+        // Mostrar mensaje al usuario
+        JOptionPane.showMessageDialog(null, "Cédula copiada al portapapeles");
+    }//GEN-LAST:event_txtNumCedulaMouseClicked
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
