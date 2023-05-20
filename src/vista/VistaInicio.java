@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import modelo.Consulta;
+import modelo.MotivoConsulta;
 import modelo.Paciente;
 
 /**
@@ -182,24 +183,23 @@ public final class VistaInicio extends javax.swing.JFrame {
                 int filaSeleccionada = vmc.jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
                 String mConsulta = vmc.jTableDatos.getValueAt(filaSeleccionada, columna).toString();
                 
+                MotivoConsulta mc = new MotivoConsulta(columna, mConsulta);
+
                 vistap = new VistaPaciente();
                 vistap.setVisible(true);
                 nprec = new Paciente();
                 consulta = new Consulta();
                 nprec = consulta.buscarPacineteID(identificador);
-                
+
                 vistap.txtCedula.setText(identificador);
-                
-                
+
                 vistap.txtNombres.setText(nprec.getNombres());
-                
+
                 vistap.txtApellidos.setText(nprec.getApellidos());
                 vistap.txtEdad.setText(calularAnios(nprec.getFechaNacimiento()));
                 vistap.txtSexo.setText(nprec.getSexo());
                 vistap.txtInstruccion.setText(nprec.getInstruccion());
                 vistap.txtMConsulta.setText(mConsulta);
-
-            
 
             }
 

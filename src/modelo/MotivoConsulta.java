@@ -30,6 +30,11 @@ public class MotivoConsulta {
     public void setMotivoConsulta(String motivoConsulta) {
         this.motivoConsulta = motivoConsulta;
     }
+
+    @Override
+    public String toString() {
+        return "MotivoConsulta{" + "idMConsulta=" + idMConsulta + ", motivoConsulta=" + motivoConsulta + '}';
+    }
     
     
     

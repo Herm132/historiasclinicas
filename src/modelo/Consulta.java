@@ -17,6 +17,45 @@ public class Consulta extends Conexion {
     private ResultSet rs = null;
     private PreparedStatement ps = null;
     Connection con = null;
+    private MotivoConsulta mconsulta = null;
+
+    public void motivoConsultaPaciente2(String numCedula, DefaultTableModel modelo) {
+        Connection con = establecerConexion();
+
+        String sql = "SELECT m.\"id_MConsulta\",m.\"motivo_Consulta\"\n"
+                + "FROM sesion s\n"
+                + "JOIN paciente p ON s.\"id_Paciente\" = p.\"id_Paciente\"\n"
+                + "JOIN mconsulta m ON s.\"id_Mconsulta\" = m.\"id_Mconsulta\"\n"
+                + "WHERE p.\"num_Cedula\" = '" + numCedula + "'";
+
+        try {
+
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            ResultSetMetaData resultado = rs.getMetaData();
+            int cantidadColumnas = resultado.getColumnCount();
+            while (rs.next()) {
+                Object[] filas = new Object[cantidadColumnas];
+
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    filas[i] = rs.getObject(i + 1);
+                }
+                modelo.addRow(filas);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e);
+
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+
+        }
+
+    }
 
     public void motivoConsultaPaciente(String numCedula, DefaultTableModel modelo) {
         Connection con = establecerConexion();
@@ -230,7 +269,7 @@ public class Consulta extends Conexion {
 
         } catch (SQLException e) {
             System.out.println(e);
-      return false;
+            return false;
 
         } finally {
             try {
@@ -284,11 +323,85 @@ public class Consulta extends Conexion {
 
         int idConsulta = 0;
         //el id de la consulta es iguial al que se creo o es el que se selecciono
+
         return idConsulta;
 
     }
 
-    public void crearSesion(Sesion sesion) {
-    //Ens base a laos datos ontenidos de la vista se crea la sesion como eol idpaciente,consulta fecha, descripcion    
+    public boolean crearSesion(Sesion sesion) {
+
+        String sql = "INSERT INTO public.sesion(\n"
+                + "\"id_Paciente\", \"id_Mconsulta\", \"fecha_Sesion\", descripcion)\n"
+                + "	VALUES ( ?, ?, ?, ?);";
+        try (Connection conect = establecerConexion()) {
+            ps = conect.prepareStatement(sql);
+
+            ps.setInt(1, sesion.getIdPaciente());
+
+            ps.setInt(2, sesion.getIdMConsulta());
+
+            ps.setString(3, sesion.getFecha());
+            ps.setString(4, sesion.getDescripcion());
+
+            ps.execute();
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+
+        }
+    }
+
+    public boolean cadulaRepetida(String cedula) {
+        try (var connection = establecerConexion()) {
+            String sql = "SELECT \"num_Cedula\" FROM paciente WHERE \"num_Cedula\"= ?";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, cedula);
+            ps.setMaxRows(1);
+            rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            return true;
+        }
+
+    }
+
+    public void crearMConsulta(String mconsulta) {
+        String sql = "INSERT INTO mconsulta(\n"
+                + " \"motivo_Consulta\")\n"
+                + "	VALUES (?);";
+        try (Connection conect = establecerConexion()) {
+            ps = conect.prepareStatement(sql);
+            ps.setString(1, mconsulta);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public MotivoConsulta getMConsulta() {
+
+        String sql = "SELECT *\n"
+                + "FROM public.mconsulta\n"
+                + "ORDER BY \"id_Mconsulta\" DESC\n"
+                + "LIMIT 1;";
+        try (Connection conect = establecerConexion()) {
+            ps = conect.prepareStatement(sql);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int idMConsulta = rs.getInt("id_Mconsulta");
+                String mConsulta = rs.getString("motivo_Consulta");
+                mconsulta = new MotivoConsulta(idMConsulta, mConsulta);
+            }
+
+            return mconsulta;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return mconsulta;
+        }
+
     }
 }

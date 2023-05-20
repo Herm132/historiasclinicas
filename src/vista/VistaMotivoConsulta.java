@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import modelo.Consulta;
+import modelo.MotivoConsulta;
 import modelo.Paciente;
 import modelo.Sesion;
 
@@ -26,25 +27,28 @@ import modelo.Sesion;
  * @author Harold
  */
 public final class VistaMotivoConsulta extends javax.swing.JFrame {
-
+    
     private final VistaNuevoPaciente vistaNP = null;
     private VistaInicio vistaI = null;
     private final Consulta consulta = new Consulta();
-
+    private Paciente paciente = null;
+    private MotivoConsulta mconsulta = null;
+    private Sesion sesion = null;
+    
     public VistaMotivoConsulta() {
         initComponents();
-
+        
         ImageIcon icono = new ImageIcon(getClass().getResource("/Imagenes/Logo.png"));
-
+        
         this.setIconImage(icono.getImage());
-
+        
         this.setVisible(true);
         this.setTitle("Motivo Consulta");
         this.setLocationRelativeTo(null);
-
+        
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
-
+            
             @Override
             public void windowClosing(WindowEvent e) {
                 mensaje();
@@ -59,30 +63,70 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         setCustomCursor(jLabelInicio);
         setCustomCursor(jLabelNPaciente);
         setCustomCursor(txtCorreo);
-
+        
     }
-
+    
     public void mensaje() {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que quieres salir?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-
+        
         if (respuesta == JOptionPane.YES_OPTION) {
-
+            
             System.exit(0);
         }
     }
-
+    
     public static void setCustomCursor(JLabel label) {
         label.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
-
+            
             public void mouseExited(MouseEvent e) {
                 label.setCursor(Cursor.getDefaultCursor());
             }
         });
     }
+    
+    public void modeloTabla() {
+        DefaultTableModel modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Permitir la edición solo en la columna de "Acciones" (columna 3)
+                return column == 1;
+            }
+        };
+        
+        modelo.addColumn("Motivo de Consulta");
+        modelo.addColumn("Acciones");
+        
+        consulta.motivoConsultaPaciente(txtNumCedula.getText(), modelo);
+        
+        this.jTableDatos.setModel(modelo);
+        
+        TablaEventos event = new TablaEventos() {
+            @Override
+            public void onEdit(int row) {
+                System.out.println("Ediarvmc");
+            }
+            
+            @Override
+            public void onView(int row) {
+                System.out.println("Vervmc ");
+            }
+        };
+        this.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender());
+        this.jTableDatos.getColumnModel().getColumn(1).setCellEditor(new CeldaEditor(event));
+        
+        JTableHeader encabezado = jTableDatos.getTableHeader();
+        encabezado.setFont(new Font("Roboto", Font.BOLD, 14)); // Tipo de letra: Arial, Negrita, Tamaño: 16
 
+        // Establecer la instancia de JTableHeader en la tabla
+        this.jTableDatos.setTableHeader(encabezado);
+
+        // Deshabilitar el movimiento de columnas
+        this.jTableDatos.getTableHeader().setReorderingAllowed(false);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -126,7 +170,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         txtTef1 = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JLabel();
         txtEstadoCivil = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextMConsulta = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -322,9 +366,9 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         txtEstadoCivil.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtEstadoCivil.setText("Estado Civil");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jTextMConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTextMConsultaActionPerformed(evt);
             }
         });
 
@@ -356,7 +400,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(fondoLayout.createSequentialGroup()
-                        .addComponent(jTextField1)
+                        .addComponent(jTextMConsulta)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
                     .addGroup(fondoLayout.createSequentialGroup()
@@ -470,7 +514,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                                 .addComponent(txtCorreo)))))
                 .addGap(18, 18, 18)
                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextMConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -521,23 +565,23 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInicioMouseClicked
 
     private void jLabelNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelNPacienteMouseClicked
-
+        
         this.dispose();
-
+        
         vistaNP.setVisible(true);
-
+        
 
     }//GEN-LAST:event_jLabelNPacienteMouseClicked
 
     private void btnNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNPacienteMouseClicked
         this.dispose();
-
+        
         vistaNP.setVisible(true);
     }//GEN-LAST:event_btnNPacienteMouseClicked
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTextMConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextMConsultaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTextMConsultaActionPerformed
 
     private void txtCorreoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMouseClicked
         // Copiar el texto en el portapapeles
@@ -550,34 +594,45 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCorreoMouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-
-        DefaultTableModel modelo = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                // Permitir la edición solo en la columna de "Acciones" (columna 3)
-                return column == 1;
-            }
-        };
-
-        modelo.addColumn("Motivo de Consulta");
-        modelo.addColumn("Acciones");
-
-      consulta.motivoConsultaPaciente(txtNumCedula.getText(), modelo);
-
-        this.jTableDatos.setModel(modelo);
         
-                LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaActual = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fechaActualTexto = fechaActual.format(formato);
-        
-        if (false) {
+
+        //insertar solo el texto y traer el ultimo insertado
+        if (!"".equals(jTextMConsulta.getText())) {
+            consulta.crearMConsulta(jTextMConsulta.getText());
+
+            //La consulta debe retornar un motivo consulta
+            mconsulta = consulta.getMConsulta();
+
+            //Pero si llamamos al nuevo modelo de la tabla tenemos en cuenta que no me lista el el nuevo pues no se la a asignado un paciente 
+            //creamos una nueva sesion con los valores conrrespondiwentes
+            String contenido = "";
+            sesion = new Sesion(consulta.obtenerIdPaciente(txtNumCedula.getText()), mconsulta.getIdMConsulta(), contenido, fechaActualTexto);
+            if (consulta.crearSesion(sesion)) {
+                jTextMConsulta.setText(contenido);
+                JOptionPane.showMessageDialog(null, "Se agrego Motivo Consulta correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            }
             
-            //Crear motivo consulta en base al id pero si ya existe notifique con una ventana 
-            String contenido = " ";
-            Sesion sesion = new Sesion(consulta.obtenerIdPaciente(txtNumCedula.getText()), consulta.idConsulta(),contenido, fechaActualTexto);
-            consulta.crearSesion(sesion);
+            modeloTabla();
+            
+        } else {
+            
         }
-    
+
+//        
+//        
+//        
+//        mconsulta = new MotivoConsulta(ICONIFIED, fechaActualTexto);
+//
+//        
+//
+//        if (false) {
+//
+//            //Crear motivo consulta en base al id pero si ya existe notifique con una ventana 
+//        }
+
     }//GEN-LAST:event_jButton1MouseClicked
 
     /**
@@ -643,7 +698,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     public javax.swing.JTable jTableDatos;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextMConsulta;
     public javax.swing.JLabel txtApellidos;
     public javax.swing.JLabel txtCorreo;
     public javax.swing.JLabel txtDireccion;

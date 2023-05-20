@@ -1,12 +1,16 @@
 package vista;
 
+import com.sun.source.tree.BreakTree;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -126,10 +130,8 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "El campos " + texto + " vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
     }
 
-    private void cedulaDuplicada() {
-//Hacer una consulta y buscar la cedula que se esta ingresando y si no existe insertar
-        JOptionPane.showMessageDialog(null, "No se puede ingresar Paciente porque la cédula ya existe.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-
+    private boolean cedulaDuplicada(String cedula) {
+            return consulta.cadulaRepetida(cedula);
     }
 
     @SuppressWarnings("unchecked")
@@ -597,10 +599,17 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
         } else if ("".equals(jTextTelefono1.getText())) {
 
             mensajeVacio("TELÉFONO 1");
-        } else {
-            insertarPersona();
+        } else if(cedulaDuplicada(jTextNumCedula.getText())) {
+                mensajeVacio(String.format("%s es repetida", jTextNumCedula.getText()));
+        }else
+        {
+                    insertarPersona();
         }
-
+        
+        
+        
+        
+//If else o COmplete los campos 
 
     }//GEN-LAST:event_jButtonGuardarMouseClicked
 

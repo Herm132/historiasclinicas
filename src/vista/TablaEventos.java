@@ -1,15 +1,11 @@
 package vista;
-
-
 /**
  *
- * @author RAVEN
+ * @author Harold
  */
 public interface TablaEventos {
 
     public void onEdit(int row);
-
-
 
     public void onView(int row);
 }
