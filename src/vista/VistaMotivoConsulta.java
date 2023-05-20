@@ -13,6 +13,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
@@ -27,28 +28,33 @@ import modelo.Sesion;
  * @author Harold
  */
 public final class VistaMotivoConsulta extends javax.swing.JFrame {
-    
+
     private final VistaNuevoPaciente vistaNP = null;
     private VistaInicio vistaI = null;
-    private final Consulta consulta = new Consulta();
+    private Consulta consulta = null;
     private Paciente paciente = null;
     private MotivoConsulta mconsulta = null;
     private Sesion sesion = null;
-    
+    private VistaPaciente vistap = null;
+    private Paciente nprec = null;
+
+    private VistaNuevoPaciente vistanp = null;
+    private VistaMotivoConsulta vistamc = null;
+
     public VistaMotivoConsulta() {
         initComponents();
-        
+
         ImageIcon icono = new ImageIcon(getClass().getResource("/Imagenes/Logo.png"));
-        
+
         this.setIconImage(icono.getImage());
-        
+
         this.setVisible(true);
         this.setTitle("Motivo Consulta");
         this.setLocationRelativeTo(null);
-        
+
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
-            
+
             @Override
             public void windowClosing(WindowEvent e) {
                 mensaje();
@@ -63,30 +69,51 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         setCustomCursor(jLabelInicio);
         setCustomCursor(jLabelNPaciente);
         setCustomCursor(txtCorreo);
-        
+
     }
-    
+
     public void mensaje() {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que quieres salir?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        
+
         if (respuesta == JOptionPane.YES_OPTION) {
-            
+
             System.exit(0);
         }
     }
-    
+
     public static void setCustomCursor(JLabel label) {
         label.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
-            
+
             public void mouseExited(MouseEvent e) {
                 label.setCursor(Cursor.getDefaultCursor());
             }
         });
     }
-    
+
+    private String calularAnios(String fecha) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Convertir la cadena de fecha en un objeto LocalDate
+        LocalDate fechaNacimiento = LocalDate.parse(fecha, formatter);
+
+        // Obtener la fecha actual
+        LocalDate fechaActual = LocalDate.now();
+
+        // Calcular la diferencia entre las dos fechas
+        Period periodo = Period.between(fechaNacimiento, fechaActual);
+
+        // Obtener la edad actual en años
+        fecha = String.valueOf(periodo.getYears());
+
+        // Imprimir la edad actual
+        return fecha;
+
+    }
+
     public void modeloTabla() {
         DefaultTableModel modelo = new DefaultTableModel() {
             @Override
@@ -95,28 +122,76 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                 return column == 1;
             }
         };
-        
+
         modelo.addColumn("Motivo de Consulta");
         modelo.addColumn("Acciones");
-        
+
         consulta.motivoConsultaPaciente(txtNumCedula.getText(), modelo);
-        
+
         this.jTableDatos.setModel(modelo);
-        
+
         TablaEventos event = new TablaEventos() {
             @Override
             public void onEdit(int row) {
-                System.out.println("Ediarvmc");
+                dispose();
+
+                int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
+
+                // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
+                int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
+                String mConsulta = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
+
+                MotivoConsulta mc = new MotivoConsulta(columna, mConsulta);
+
+                vistap = new VistaPaciente();
+                vistap.setVisible(true);
+                nprec = new Paciente();
+                consulta = new Consulta();
+                nprec = consulta.buscarPacineteID(txtNumCedula.getText());
+
+                vistap.txtCedula.setText(txtNumCedula.getText());
+
+                vistap.txtNombres.setText(nprec.getNombres());
+
+                vistap.txtApellidos.setText(nprec.getApellidos());
+                vistap.txtEdad.setText(calularAnios(nprec.getFechaNacimiento()));
+                vistap.txtSexo.setText(nprec.getSexo());
+                vistap.txtInstruccion.setText(nprec.getInstruccion());
+                vistap.txtMConsulta.setText(mConsulta);
             }
-            
+
             @Override
             public void onView(int row) {
-                System.out.println("Vervmc ");
+                dispose();
+
+                int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
+
+                // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
+                int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
+                String mConsulta = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
+
+                MotivoConsulta mc = new MotivoConsulta(columna, mConsulta);
+
+                vistap = new VistaPaciente();
+                vistap.setVisible(true);
+                nprec = new Paciente();
+                consulta = new Consulta();
+                nprec = consulta.buscarPacineteID(txtNumCedula.getText());
+
+                vistap.txtCedula.setText(txtNumCedula.getText());
+
+                vistap.txtNombres.setText(nprec.getNombres());
+
+                vistap.txtApellidos.setText(nprec.getApellidos());
+                vistap.txtEdad.setText(calularAnios(nprec.getFechaNacimiento()));
+                vistap.txtSexo.setText(nprec.getSexo());
+                vistap.txtInstruccion.setText(nprec.getInstruccion());
+                vistap.txtMConsulta.setText(mConsulta);
             }
         };
         this.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender());
         this.jTableDatos.getColumnModel().getColumn(1).setCellEditor(new CeldaEditor(event));
-        
+
         JTableHeader encabezado = jTableDatos.getTableHeader();
         encabezado.setFont(new Font("Roboto", Font.BOLD, 14)); // Tipo de letra: Arial, Negrita, Tamaño: 16
 
@@ -126,7 +201,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         // Deshabilitar el movimiento de columnas
         this.jTableDatos.getTableHeader().setReorderingAllowed(false);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -565,17 +640,17 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInicioMouseClicked
 
     private void jLabelNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelNPacienteMouseClicked
-        
+
         this.dispose();
-        
+
         vistaNP.setVisible(true);
-        
+
 
     }//GEN-LAST:event_jLabelNPacienteMouseClicked
 
     private void btnNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNPacienteMouseClicked
         this.dispose();
-        
+
         vistaNP.setVisible(true);
     }//GEN-LAST:event_btnNPacienteMouseClicked
 
@@ -594,10 +669,11 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCorreoMouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        
+
         LocalDate fechaActual = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fechaActualTexto = fechaActual.format(formato);
+        consulta=new Consulta();
 
         //insertar solo el texto y traer el ultimo insertado
         if (!"".equals(jTextMConsulta.getText())) {
@@ -614,11 +690,11 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                 jTextMConsulta.setText(contenido);
                 JOptionPane.showMessageDialog(null, "Se agrego Motivo Consulta correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
             }
-            
+
             modeloTabla();
-            
+
         } else {
-            
+            JOptionPane.showMessageDialog(null, "El MOTIVO CONSULTA esta vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
 
 //        

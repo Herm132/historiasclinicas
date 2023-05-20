@@ -21,7 +21,7 @@ import modelo.Sesion;
  */
 public final class VistaPaciente extends javax.swing.JFrame {
 
-    private final VistaNuevoPaciente vistaNP = new VistaNuevoPaciente();
+    private VistaNuevoPaciente vistaNP = null;
     private VistaInicio vistaI = null;
     Consulta consulta = null;
     Sesion sesion = null;

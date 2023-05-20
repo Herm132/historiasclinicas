@@ -28,7 +28,7 @@ public final class VistaInicio extends javax.swing.JFrame {
     private VistaNuevoPaciente vistanp = null;
     private VistaMotivoConsulta vistamc = null;
     private Consulta consulta = null;
-    Paciente nprec = null;
+    private Paciente nprec = null;
     private VistaPaciente vistap = null;
 
     public VistaInicio() {
@@ -205,7 +205,30 @@ public final class VistaInicio extends javax.swing.JFrame {
 
             @Override
             public void onView(int row) {
-                System.out.println("mcv");
+                               vmc.dispose();
+                int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
+
+                // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
+                int filaSeleccionada = vmc.jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
+                String mConsulta = vmc.jTableDatos.getValueAt(filaSeleccionada, columna).toString();
+                
+                MotivoConsulta mc = new MotivoConsulta(columna, mConsulta);
+
+                vistap = new VistaPaciente();
+                vistap.setVisible(true);
+                nprec = new Paciente();
+                consulta = new Consulta();
+                nprec = consulta.buscarPacineteID(identificador);
+
+                vistap.txtCedula.setText(identificador);
+
+                vistap.txtNombres.setText(nprec.getNombres());
+
+                vistap.txtApellidos.setText(nprec.getApellidos());
+                vistap.txtEdad.setText(calularAnios(nprec.getFechaNacimiento()));
+                vistap.txtSexo.setText(nprec.getSexo());
+                vistap.txtInstruccion.setText(nprec.getInstruccion());
+                vistap.txtMConsulta.setText(mConsulta);
             }
         };
         vmc.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender());
