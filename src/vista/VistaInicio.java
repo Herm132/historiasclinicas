@@ -30,6 +30,7 @@ public final class VistaInicio extends javax.swing.JFrame {
     private Consulta consulta = null;
     private Paciente nprec = null;
     private VistaPaciente vistap = null;
+    private MotivoConsulta mconsulta = null;
 
     public VistaInicio() {
         initComponents();
@@ -182,10 +183,13 @@ public final class VistaInicio extends javax.swing.JFrame {
                 // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
                 int filaSeleccionada = vmc.jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
                 String mConsulta = vmc.jTableDatos.getValueAt(filaSeleccionada, columna).toString();
-                
-                MotivoConsulta mc = new MotivoConsulta(columna, mConsulta);
 
+                //Hcaer que le mcosulta sea unico y no se repita
+                //Buscamos por el nombre y obtenemos el id y ya pasamos a la vista p
+                mconsulta = consulta.getMConsulta(mConsulta);
                 vistap = new VistaPaciente();
+                vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
+
                 vistap.setVisible(true);
                 nprec = new Paciente();
                 consulta = new Consulta();
@@ -205,14 +209,15 @@ public final class VistaInicio extends javax.swing.JFrame {
 
             @Override
             public void onView(int row) {
-                               vmc.dispose();
+                vmc.dispose();
                 int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
 
                 // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
                 int filaSeleccionada = vmc.jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
                 String mConsulta = vmc.jTableDatos.getValueAt(filaSeleccionada, columna).toString();
-                
-                MotivoConsulta mc = new MotivoConsulta(columna, mConsulta);
+
+                mconsulta = consulta.getMConsulta(mConsulta);
+                vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
 
                 vistap = new VistaPaciente();
                 vistap.setVisible(true);

@@ -142,6 +142,10 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                 String mConsulta = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
 
                 MotivoConsulta mc = new MotivoConsulta(columna, mConsulta);
+                //La consulta debe retornar un motivo consulta
+
+                mconsulta = consulta.getUltimaMConsulta();
+                vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
 
                 vistap = new VistaPaciente();
                 vistap.setVisible(true);
@@ -177,6 +181,9 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                 nprec = new Paciente();
                 consulta = new Consulta();
                 nprec = consulta.buscarPacineteID(txtNumCedula.getText());
+
+                mconsulta = consulta.getUltimaMConsulta();
+                vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
 
                 vistap.txtCedula.setText(txtNumCedula.getText());
 
@@ -673,21 +680,21 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         LocalDate fechaActual = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fechaActualTexto = fechaActual.format(formato);
-        consulta=new Consulta();
+        consulta = new Consulta();
 
         //insertar solo el texto y traer el ultimo insertado
         if (!"".equals(jTextMConsulta.getText())) {
             consulta.crearMConsulta(jTextMConsulta.getText());
 
             //La consulta debe retornar un motivo consulta
-            mconsulta = consulta.getMConsulta();
+            mconsulta = consulta.getUltimaMConsulta();
 
             //Pero si llamamos al nuevo modelo de la tabla tenemos en cuenta que no me lista el el nuevo pues no se la a asignado un paciente 
             //creamos una nueva sesion con los valores conrrespondiwentes
             String contenido = "";
             sesion = new Sesion(consulta.obtenerIdPaciente(txtNumCedula.getText()), mconsulta.getIdMConsulta(), contenido, fechaActualTexto);
             if (consulta.crearSesion(sesion)) {
-                jTextMConsulta.setText(contenido);
+
                 JOptionPane.showMessageDialog(null, "Se agrego Motivo Consulta correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
             }
 

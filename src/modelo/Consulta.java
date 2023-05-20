@@ -380,7 +380,7 @@ public class Consulta extends Conexion {
         }
     }
 
-    public MotivoConsulta getMConsulta() {
+    public MotivoConsulta getUltimaMConsulta() {
 
         String sql = "SELECT *\n"
                 + "FROM public.mconsulta\n"
@@ -401,6 +401,73 @@ public class Consulta extends Conexion {
         } catch (SQLException e) {
             System.out.println(e);
             return mconsulta;
+        }
+
+    }
+
+    public MotivoConsulta getMConsulta(String mConsulta) {
+
+        String sql = "SELECT *\n"
+                + "FROM public.mconsulta\n"
+                + "WHERE \"motivo_Consulta\"= ?;";
+        try (Connection conect = establecerConexion()) {
+            ps = conect.prepareStatement(sql);
+            ps.setString(1, mConsulta);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int idMConsulta = rs.getInt("id_Mconsulta");
+                mConsulta = rs.getString("motivo_Consulta");
+                mconsulta = new MotivoConsulta(idMConsulta, mConsulta);
+            }
+
+            return mconsulta;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return mconsulta;
+        }
+
+    }
+
+    public boolean updateSesion(Sesion sesion,String contenido) {
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        String sql = "UPDATE sesion\n"
+                + "	SET  descripcion=?\n"
+                + "	WHERE \"descripcion\"=?;";
+        try (Connection conect = establecerConexion()) {
+            ps = conect.prepareStatement(sql);
+            ps.setString(1, sesion.getDescripcion());
+            ps.setString(2, contenido);
+  
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+                 return false;
         }
 
     }

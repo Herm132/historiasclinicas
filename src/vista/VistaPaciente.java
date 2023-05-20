@@ -27,9 +27,11 @@ public final class VistaPaciente extends javax.swing.JFrame {
     Sesion sesion = null;
 
     public VistaPaciente() {
+        initComponents();
          System.setProperty("console.encoding", "UTF-8");
 
-        initComponents();
+        jIdMconsulta.setVisible(false);
+        
 
         ImageIcon icono = new ImageIcon(getClass().getResource("/Imagenes/Logo.png"));
 
@@ -117,6 +119,7 @@ public final class VistaPaciente extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         txtCedula = new javax.swing.JLabel();
+        jIdMconsulta = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -261,6 +264,9 @@ public final class VistaPaciente extends javax.swing.JFrame {
         txtCedula.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtCedula.setText("Cedula");
 
+        jIdMconsulta.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jIdMconsulta.setText("1");
+
         javax.swing.GroupLayout fondoLayout = new javax.swing.GroupLayout(fondo);
         fondo.setLayout(fondoLayout);
         fondoLayout.setHorizontalGroup(
@@ -297,7 +303,9 @@ public final class VistaPaciente extends javax.swing.JFrame {
                                         .addComponent(jLabel6)
                                         .addGap(18, 18, 18)
                                         .addComponent(txtMConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 172, Short.MAX_VALUE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jIdMconsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())
                             .addGroup(fondoLayout.createSequentialGroup()
                                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -311,7 +319,7 @@ public final class VistaPaciente extends javax.swing.JFrame {
                                             .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtEdad))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
                                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel9)
                                     .addComponent(jLabel10)
@@ -343,7 +351,9 @@ public final class VistaPaciente extends javax.swing.JFrame {
                             .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fondoLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMConsulta)))
+                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtMConsulta)
+                            .addComponent(jIdMconsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(fondoLayout.createSequentialGroup()
@@ -452,14 +462,17 @@ public final class VistaPaciente extends javax.swing.JFrame {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fechaActualTexto = fechaActual.format(formato);
         
+                
 
    
 
-        sesion=new Sesion(consulta.obtenerIdPaciente(txtCedula.getText()), 1, contenido, fechaActualTexto);
-        System.out.println(sesion.toString());
-
-//        consulta.guardarCita(sesion, contenido);
-
+        sesion=new Sesion(consulta.obtenerIdPaciente(txtCedula.getText()), Integer.parseInt(jIdMconsulta.getText()), contenido, fechaActualTexto);
+            if (consulta.updateSesion(sesion,contenido)) {
+                JOptionPane.showMessageDialog(null, "Se agrego guardo corectamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                System.out.println("no se pudo actualizar");
+            }
+//se tiene que actualizar 
     }//GEN-LAST:event_btnGuardarMouseClicked
 
     private void btnNFechaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNFechaMouseClicked
@@ -523,6 +536,7 @@ public final class VistaPaciente extends javax.swing.JFrame {
     public javax.swing.JLabel btnNPaciente;
     public javax.swing.JLabel btnSalir;
     private javax.swing.JPanel fondo;
+    public javax.swing.JLabel jIdMconsulta;
     public javax.swing.JLabel jLabel10;
     public javax.swing.JLabel jLabel11;
     public javax.swing.JLabel jLabel2;
