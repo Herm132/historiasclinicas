@@ -28,10 +28,14 @@ public final class VistaPaciente extends javax.swing.JFrame {
 
     public VistaPaciente() {
         initComponents();
-         System.setProperty("console.encoding", "UTF-8");
+        consulta=new Consulta();
+
+
+        
+        
+        System.setProperty("console.encoding", "UTF-8");
 
         jIdMconsulta.setVisible(false);
-        
 
         ImageIcon icono = new ImageIcon(getClass().getResource("/Imagenes/Logo.png"));
 
@@ -351,9 +355,9 @@ public final class VistaPaciente extends javax.swing.JFrame {
                             .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fondoLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtMConsulta)
-                            .addComponent(jIdMconsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jIdMconsulta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMConsulta))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(fondoLayout.createSequentialGroup()
@@ -455,23 +459,27 @@ public final class VistaPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNPacienteMouseClicked
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
-        // Obtén el contenido del JTextArea
-        String contenido = jTextAreaHistoria.getText();
         consulta = new Consulta();
+
+// Obtén el contenido del JTextArea
+        //Tengo que traer el contenido de la base de datos y compara con el otro
+        //COnsultar esta sesion y buscar por id de la sesion 
+        //con in int hacer una consulta en base a cedula y motivo
+        String contenidoAntes = consulta.descripcionPorId(consulta.obtenerIdPaciente(txtCedula.getText()), Integer.parseInt(jIdMconsulta.getText()));
+
+        String contenidoActual = jTextAreaHistoria.getText();
+
         LocalDate fechaActual = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String fechaActualTexto = fechaActual.format(formato);
-        
-                
 
-   
+        sesion = new Sesion(consulta.obtenerIdPaciente(txtCedula.getText()), Integer.parseInt(jIdMconsulta.getText()), contenidoActual, fechaActualTexto);
 
-        sesion=new Sesion(consulta.obtenerIdPaciente(txtCedula.getText()), Integer.parseInt(jIdMconsulta.getText()), contenido, fechaActualTexto);
-            if (consulta.updateSesion(sesion,contenido)) {
-                JOptionPane.showMessageDialog(null, "Se agrego guardo corectamente", "Información", JOptionPane.INFORMATION_MESSAGE);
-            }else{
-                System.out.println("no se pudo actualizar");
-            }
+        if (consulta.updateSesion(sesion, contenidoAntes)) {
+            JOptionPane.showMessageDialog(null, "Se agrego guardo corectamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            System.out.println("no se pudo actualizar");
+        }
 //se tiene que actualizar 
     }//GEN-LAST:event_btnGuardarMouseClicked
 
@@ -552,7 +560,7 @@ public final class VistaPaciente extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea jTextAreaHistoria;
+    public javax.swing.JTextArea jTextAreaHistoria;
     public javax.swing.JLabel txtApellidos;
     public javax.swing.JLabel txtCedula;
     public javax.swing.JLabel txtEdad;

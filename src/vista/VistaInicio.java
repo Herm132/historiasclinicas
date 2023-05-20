@@ -31,6 +31,8 @@ public final class VistaInicio extends javax.swing.JFrame {
     private Paciente nprec = null;
     private VistaPaciente vistap = null;
     private MotivoConsulta mconsulta = null;
+    private VistaBusqueda vistab = null;
+    
 
     public VistaInicio() {
         initComponents();
@@ -178,6 +180,8 @@ public final class VistaInicio extends javax.swing.JFrame {
             @Override
             public void onEdit(int row) {
                 vmc.dispose();
+
+                consulta = new Consulta();
                 int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
 
                 // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
@@ -187,18 +191,20 @@ public final class VistaInicio extends javax.swing.JFrame {
                 //Hcaer que le mcosulta sea unico y no se repita
                 //Buscamos por el nombre y obtenemos el id y ya pasamos a la vista p
                 mconsulta = consulta.getMConsulta(mConsulta);
-                vistap = new VistaPaciente();
-                vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
 
-                vistap.setVisible(true);
-                nprec = new Paciente();
-                consulta = new Consulta();
                 nprec = consulta.buscarPacineteID(identificador);
 
+       
+
+                vistap = new VistaPaciente();
+
+                String contenidoAntes = consulta.descripcionPorId(consulta.obtenerIdPaciente(identificador),mconsulta.getIdMConsulta());
+                   vistap.jTextAreaHistoria.setText(contenidoAntes);
+
+                vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
+                vistap.setVisible(true);
                 vistap.txtCedula.setText(identificador);
-
                 vistap.txtNombres.setText(nprec.getNombres());
-
                 vistap.txtApellidos.setText(nprec.getApellidos());
                 vistap.txtEdad.setText(calularAnios(nprec.getFechaNacimiento()));
                 vistap.txtSexo.setText(nprec.getSexo());
@@ -209,31 +215,7 @@ public final class VistaInicio extends javax.swing.JFrame {
 
             @Override
             public void onView(int row) {
-                vmc.dispose();
-                int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
-
-                // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
-                int filaSeleccionada = vmc.jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
-                String mConsulta = vmc.jTableDatos.getValueAt(filaSeleccionada, columna).toString();
-
-                mconsulta = consulta.getMConsulta(mConsulta);
-                vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
-
-                vistap = new VistaPaciente();
-                vistap.setVisible(true);
-                nprec = new Paciente();
-                consulta = new Consulta();
-                nprec = consulta.buscarPacineteID(identificador);
-
-                vistap.txtCedula.setText(identificador);
-
-                vistap.txtNombres.setText(nprec.getNombres());
-
-                vistap.txtApellidos.setText(nprec.getApellidos());
-                vistap.txtEdad.setText(calularAnios(nprec.getFechaNacimiento()));
-                vistap.txtSexo.setText(nprec.getSexo());
-                vistap.txtInstruccion.setText(nprec.getInstruccion());
-                vistap.txtMConsulta.setText(mConsulta);
+                System.out.println("Ver");
             }
         };
         vmc.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender());
@@ -275,7 +257,7 @@ public final class VistaInicio extends javax.swing.JFrame {
 
             @Override
             public void onView(int row) {
-                System.out.println("View row : " + row);
+                System.out.println("Ver");
             }
         };
 
@@ -408,8 +390,18 @@ public final class VistaInicio extends javax.swing.JFrame {
 
         jLabelBuscar.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabelBuscar.setText("Buscar");
+        jLabelBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelBuscarMouseClicked(evt);
+            }
+        });
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/search20x20.png"))); // NOI18N
+        btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout fondoLayout = new javax.swing.GroupLayout(fondo);
         fondo.setLayout(fondoLayout);
@@ -506,15 +498,28 @@ public final class VistaInicio extends javax.swing.JFrame {
     private void jLabelNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelNPacienteMouseClicked
 
         this.dispose();
+        vistanp = new VistaNuevoPaciente();
         vistanp.setVisible(true);
 
     }//GEN-LAST:event_jLabelNPacienteMouseClicked
 
     private void btnNPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNPacienteMouseClicked
-        //    this.dispose();
-
-        //    vistanp.setVisible(true);
+        this.dispose();
+        vistanp = new VistaNuevoPaciente();
+        vistanp.setVisible(true);
     }//GEN-LAST:event_btnNPacienteMouseClicked
+
+    private void jLabelBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelBuscarMouseClicked
+        this.dispose();
+        vistab = new VistaBusqueda();
+        vistab.setVisible(true);
+    }//GEN-LAST:event_jLabelBuscarMouseClicked
+
+    private void btnBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseClicked
+        this.dispose();
+        vistab = new VistaBusqueda();
+        vistab.setVisible(true);
+    }//GEN-LAST:event_btnBuscarMouseClicked
 
     /**
      * @param args the command line arguments

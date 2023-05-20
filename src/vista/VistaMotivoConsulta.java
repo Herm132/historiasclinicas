@@ -134,6 +134,9 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
             @Override
             public void onEdit(int row) {
                 dispose();
+                vistap = new VistaPaciente();
+                nprec = new Paciente();
+                consulta = new Consulta();
 
                 int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
 
@@ -141,16 +144,15 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
                 int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
                 String mConsulta = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
 
-                MotivoConsulta mc = new MotivoConsulta(columna, mConsulta);
                 //La consulta debe retornar un motivo consulta
-
                 mconsulta = consulta.getUltimaMConsulta();
                 vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
+                
+                
+                
 
-                vistap = new VistaPaciente();
                 vistap.setVisible(true);
-                nprec = new Paciente();
-                consulta = new Consulta();
+
                 nprec = consulta.buscarPacineteID(txtNumCedula.getText());
 
                 vistap.txtCedula.setText(txtNumCedula.getText());
@@ -166,34 +168,8 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
             @Override
             public void onView(int row) {
-                dispose();
+                System.out.println("Ver");
 
-                int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
-
-                // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
-                int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
-                String mConsulta = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
-
-                MotivoConsulta mc = new MotivoConsulta(columna, mConsulta);
-
-                vistap = new VistaPaciente();
-                vistap.setVisible(true);
-                nprec = new Paciente();
-                consulta = new Consulta();
-                nprec = consulta.buscarPacineteID(txtNumCedula.getText());
-
-                mconsulta = consulta.getUltimaMConsulta();
-                vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
-
-                vistap.txtCedula.setText(txtNumCedula.getText());
-
-                vistap.txtNombres.setText(nprec.getNombres());
-
-                vistap.txtApellidos.setText(nprec.getApellidos());
-                vistap.txtEdad.setText(calularAnios(nprec.getFechaNacimiento()));
-                vistap.txtSexo.setText(nprec.getSexo());
-                vistap.txtInstruccion.setText(nprec.getInstruccion());
-                vistap.txtMConsulta.setText(mConsulta);
             }
         };
         this.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender());
@@ -685,6 +661,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
         //insertar solo el texto y traer el ultimo insertado
         if (!"".equals(jTextMConsulta.getText())) {
             consulta.crearMConsulta(jTextMConsulta.getText());
+            this.jTextMConsulta.setText("");
 
             //La consulta debe retornar un motivo consulta
             mconsulta = consulta.getUltimaMConsulta();

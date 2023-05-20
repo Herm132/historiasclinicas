@@ -293,7 +293,7 @@ public class Consulta extends Conexion {
             ps = con.prepareStatement(sql);
             ps.setString(1, cedula);
 
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             if (rs.next()) {
                 id = rs.getInt("id_Paciente");
 
@@ -429,17 +429,53 @@ public class Consulta extends Conexion {
 
     }
 
-    public boolean updateSesion(Sesion sesion,String contenido) {
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    public boolean updateSesion(Sesion sesion, String contenido) {
+
+        String sql = "UPDATE sesion\n"
+                + "	SET  descripcion=?\n"
+                + "	WHERE \"id_Paciente\"=? AND \"id_Mconsulta\" =? AND \"descripcion\"=?;";
+        try (Connection conect = establecerConexion()) {
+            ps = conect.prepareStatement(sql);
+            ps.setString(1, sesion.getDescripcion());
+            ps.setInt(2, sesion.getIdPaciente());
+            ps.setInt(3, sesion.getIdMConsulta());
+            ps.setString(4, contenido);
+
+            ps.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+
+    }
+
+    public String descripcionPorId(int idPaciente, int idMConsulta) {
+        String contenidio = null;
+
+        String sql = "SELECT descripcion FROM sesion WHERE  \"id_Paciente\"=? AND \"id_Mconsulta\" =?";
+        try (Connection conect = establecerConexion()) {
+            ps = conect.prepareStatement(sql);
+            ps.setInt(1, idPaciente);
+            ps.setInt(2, idMConsulta);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                contenidio = rs.getString("descripcion");
+
+            }
+
+            return contenidio;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return contenidio;
+        }
+
+    }
+
+    public boolean cargarDescripcion(Sesion sesion, String contenido) {
 
         String sql = "UPDATE sesion\n"
                 + "	SET  descripcion=?\n"
@@ -448,27 +484,15 @@ public class Consulta extends Conexion {
             ps = conect.prepareStatement(sql);
             ps.setString(1, sesion.getDescripcion());
             ps.setString(2, contenido);
-  
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
             ps.executeUpdate();
+
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-                 return false;
+            return false;
         }
 
     }
+
 }
