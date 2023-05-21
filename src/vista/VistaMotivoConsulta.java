@@ -121,7 +121,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
         this.jTableDatos.setModel(modelo);
 
-        TablaEventos event = new TablaEventos() {
+        TablaEventos2 event = new TablaEventos2() {
 
             @Override
             public void onView(int row) {
@@ -152,8 +152,8 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
             }
         };
-        this.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender());
-        this.jTableDatos.getColumnModel().getColumn(1).setCellEditor(new CeldaEditor(event));
+        this.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender1());
+        this.jTableDatos.getColumnModel().getColumn(1).setCellEditor(new CeldaEditor2(event));
 
         JTableHeader encabezado = jTableDatos.getTableHeader();
         encabezado.setFont(new Font("Roboto", Font.BOLD, 14)); // Tipo de letra: Roboto, Negrita, Tamaño: 16

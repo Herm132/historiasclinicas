@@ -10,10 +10,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import controlador.Controlador;
 import java.awt.Font;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import modelo.Consulta;
+import modelo.MotivoConsulta;
+import modelo.Paciente;
 
 /**
  *
@@ -23,6 +31,11 @@ public final class VistaBusqueda extends javax.swing.JFrame {
 
     private VistaNuevoPaciente vistanp = null;
     private Consulta consulta = null;
+    private VistaMotivoConsulta vistamc = null;
+    private VistaActualizarPaciente vistaap = null;
+    private Paciente nprec = null;
+    private VistaPaciente vistap = null;
+    private MotivoConsulta mconsulta = null;
 
     public VistaBusqueda() {
         initComponents();
@@ -63,6 +76,62 @@ public final class VistaBusqueda extends javax.swing.JFrame {
         this.jTableDatos.getTableHeader().setReorderingAllowed(false);
     }
 
+    public void btnEditar() {
+
+        // Obtener el índice de la columna "num_Cedula"
+        int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
+
+        // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
+        int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
+        String identificador = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
+
+        nprec = new Paciente();
+        consulta = new Consulta();
+        nprec = consulta.buscarPacineteID(identificador);
+
+        this.dispose();
+
+        vistaap = new VistaActualizarPaciente();
+
+        vistaap.setVisible(true);
+
+        vistaap.txtFecha.setText(nprec.getFechaRegistro());
+
+        vistaap.jTextNumCedula.setText(nprec.getNumCedula());
+
+        vistaap.jTextNombres.setText(nprec.getNombres());
+
+        vistaap.jTextApellido.setText(nprec.getApellidos());
+
+        String stringFecha = nprec.getFechaNacimiento();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date fecha = null;
+
+        try {
+            fecha = formato.parse(stringFecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        vistaap.jDateFechaNaci.setDate(fecha);
+
+        vistaap.jComboBoxSexo.setSelectedItem(nprec.getSexo());
+
+        vistaap.jComboBoxEstadoCivil.setSelectedItem(nprec.getEstadoCivil());
+
+        vistaap.jComboBoxInstruccion.setSelectedItem(nprec.getInstruccion());
+
+        vistaap.jTextDireccion.setText(nprec.getDireccion());
+
+        vistaap.jTextTelefono1.setText(nprec.getNumTelefono1());
+        vistaap.jTextTelefono2.setText(nprec.getNumTelefono2());
+
+        vistaap.jTextCorreo.setText(nprec.getCorreo());
+
+        vistaap.numCedula = identificador;
+
+    }
+
     public void mensaje() {
         int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que quieres salir?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
@@ -84,6 +153,136 @@ public final class VistaBusqueda extends javax.swing.JFrame {
         });
     }
 
+    public void modeloTabla2(VistaMotivoConsulta vmc, String identificador) {
+        DefaultTableModel modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Permitir la edición solo en la columna de "Acciones" (columna 3)
+                return column == 1;
+            }
+        };
+
+        modelo.addColumn("Motivo de Consulta");
+        modelo.addColumn("Acciones");
+
+        consulta.motivoConsultaPaciente(identificador, modelo);
+
+        vmc.jTableDatos.setModel(modelo);
+
+        TablaEventos2 event = new TablaEventos2() {
+            @Override
+            public void onView(int row) {
+                vmc.dispose();
+
+                consulta = new Consulta();
+                int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
+
+                // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
+                int filaSeleccionada = vmc.jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
+                String mConsulta = vmc.jTableDatos.getValueAt(filaSeleccionada, columna).toString();
+
+                //Hcaer que le mcosulta sea unico y no se repita
+                //Buscamos por el nombre y obtenemos el id y ya pasamos a la vista p
+                mconsulta = consulta.getMConsulta(mConsulta);
+
+                nprec = consulta.buscarPacineteID(identificador);
+
+                vistap = new VistaPaciente();
+
+                String contenidoAntes = consulta.descripcionPorId(consulta.obtenerIdPaciente(identificador), mconsulta.getIdMConsulta());
+                vistap.jTextAreaHistoria.setText(contenidoAntes);
+
+                vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
+                vistap.setVisible(true);
+                vistap.txtCedula.setText(identificador);
+                vistap.txtNombres.setText(nprec.getNombres());
+                vistap.txtApellidos.setText(nprec.getApellidos());
+                vistap.txtEdad.setText(calularAnios(nprec.getFechaNacimiento()));
+                vistap.txtSexo.setText(nprec.getSexo());
+                vistap.txtInstruccion.setText(nprec.getInstruccion());
+                vistap.txtMConsulta.setText(mConsulta);
+            }
+
+        };
+        vmc.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender2());
+        vmc.jTableDatos.getColumnModel().getColumn(1).setCellEditor(new CeldaEditor2(event));
+
+        JTableHeader encabezado = vmc.jTableDatos.getTableHeader();
+        encabezado.setFont(new Font("Roboto", Font.BOLD, 14)); // Tipo de letra: Arial, Negrita, Tamaño: 16
+
+        // Establecer la instancia de JTableHeader en la tabla
+        vmc.jTableDatos.setTableHeader(encabezado);
+
+        // Deshabilitar el movimiento de columnas
+        vmc.jTableDatos.getTableHeader().setReorderingAllowed(false);
+    }
+
+    private String calularAnios(String fecha) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Convertir la cadena de fecha en un objeto LocalDate
+        LocalDate fechaNacimiento = LocalDate.parse(fecha, formatter);
+
+        // Obtener la fecha actual
+        LocalDate fechaActual = LocalDate.now();
+
+        // Calcular la diferencia entre las dos fechas
+        Period periodo = Period.between(fechaNacimiento, fechaActual);
+
+        // Obtener la edad actual en años
+        fecha = String.valueOf(periodo.getYears());
+
+        // Imprimir la edad actual
+        return fecha;
+
+    }
+
+    public void btnVer() {
+
+        // Obtener el índice de la columna "num_Cedula"
+        int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
+
+        // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
+        int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
+        String identificador = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
+
+        nprec = new Paciente();
+        consulta = new Consulta();
+        nprec = consulta.buscarPacineteID(identificador);
+
+        this.dispose();
+
+        vistamc = new VistaMotivoConsulta();
+
+        vistamc.setVisible(true);
+
+        modeloTabla2(vistamc, identificador);
+
+        vistamc.txtFechaRegistro.setText(nprec.getFechaRegistro());
+
+        vistamc.txtNumCedula.setText(nprec.getNumCedula());
+
+        vistamc.txtNombres.setText(nprec.getNombres());
+
+        vistamc.txtApellidos.setText(nprec.getApellidos());
+
+        vistamc.txtEdad.setText(calularAnios(nprec.getFechaNacimiento()));
+
+        vistamc.txtSexo.setText(nprec.getSexo());
+        vistamc.txtEstadoCivil.setText(nprec.getEstadoCivil());
+
+        vistamc.txtInstruccion.setText(nprec.getInstruccion());
+
+        vistamc.txtDireccion.setText(nprec.getDireccion());
+
+        vistamc.txtTef1.setText(nprec.getNumTelefono1());
+        vistamc.txtTef2.setText(nprec.getNumTelefono2());
+
+        vistamc.txtCorreo.setText(nprec.getCorreo());
+
+    }
+
     public void modeloTabla() {
         DefaultTableModel modelo = new DefaultTableModel() {
             @Override
@@ -101,20 +300,20 @@ public final class VistaBusqueda extends javax.swing.JFrame {
         consulta.busquedaPacientes(modelo, txtBuscar.getText());
 
         this.jTableDatos.setModel(modelo);
-        TablaEventos event = new TablaEventos() {
-//            @Override
-//            public void onEdit(int row) {
-//                System.out.println("Edit row : " + row);
-//            }
+        TablaEventos1 event = new TablaEventos1() {
+            @Override
+            public void onEdit(int row) {
+                btnEditar();
+            }
 
             @Override
             public void onView(int row) {
-                System.out.println("View row : " + row);
+                btnVer();
             }
         };
 
-        this.jTableDatos.getColumnModel().getColumn(3).setCellRenderer(new CeldaRender());
-        this.jTableDatos.getColumnModel().getColumn(3).setCellEditor(new CeldaEditor(event));
+        this.jTableDatos.getColumnModel().getColumn(3).setCellRenderer(new CeldaRender1());
+        this.jTableDatos.getColumnModel().getColumn(3).setCellEditor(new CeldaEditor1(event));
     }
 
     @SuppressWarnings("unchecked")
@@ -425,7 +624,7 @@ public final class VistaBusqueda extends javax.swing.JFrame {
 
         if (evt.getKeyCode() == evt.VK_ENTER || evt.getKeyCode() == evt.VK_SPACE) {
             modeloTabla();
-        } 
+        }
 
 
     }//GEN-LAST:event_txtBuscarKeyPressed

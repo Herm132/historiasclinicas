@@ -319,15 +319,6 @@ public class Consulta extends Conexion {
 
     }
 
-    public int idConsulta() {
-
-        int idConsulta = 0;
-        //el id de la consulta es iguial al que se creo o es el que se selecciono
-
-        return idConsulta;
-
-    }
-
     public boolean crearSesion(Sesion sesion) {
 
         String sql = "INSERT INTO public.sesion(\n"
@@ -495,4 +486,39 @@ public class Consulta extends Conexion {
 
     }
 
+    public boolean actualizarPaciente(Paciente pac, int id) {
+
+        String sql = "UPDATE public.paciente\n"
+                + "	SET \"num_Cedula\"=?, nombres=?, apellidos=?,"
+                + " \"fecha_Nacimiento\"=?, sexo=?, intruccion=?,"
+                + " \"estado_Civil\"=?, direccion=?, \"num_Telefono1\"=?,"
+                + " \"num_Telefono2\"=?, correo=?, \"fecha_Registro\"=?\n"
+                + "	WHERE \"id_Paciente\"=?;";
+        try (Connection conect = establecerConexion()) {
+            ps = conect.prepareStatement(sql);
+
+            ps.setString(1, pac.getNumCedula());
+            ps.setString(2, pac.getNombres());
+            ps.setString(3, pac.getApellidos());
+            ps.setString(4, pac.getFechaNacimiento());
+            ps.setString(5, pac.getSexo());
+            ps.setString(6, pac.getInstruccion());
+            ps.setString(7, pac.getEstadoCivil());
+            ps.setString(8, pac.getDireccion());
+            ps.setString(9, pac.getNumTelefono1());
+            ps.setString(10, pac.getNumTelefono2());
+            ps.setString(11, pac.getCorreo());
+            ps.setString(12, pac.getFechaRegistro());
+            ps.setInt(13, id);
+
+            ps.execute();
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+
+        }
+
+    }
 }

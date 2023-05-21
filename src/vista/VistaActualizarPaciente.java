@@ -18,18 +18,18 @@ import modelo.Paciente;
  *
  * @author Harold
  */
-public final class VistaNuevoPaciente extends javax.swing.JFrame {
+public final class VistaActualizarPaciente extends javax.swing.JFrame {
 
     private VistaInicio vistaI = null;
     private Consulta consulta = null;
     private Paciente aux = null;
     private VistaBusqueda vistab = null;
+    public String numCedula = null;
 
-    public VistaNuevoPaciente() {
+    public VistaActualizarPaciente() {
         System.setProperty("console.encoding", "UTF-8");
 
         initComponents();
-        txtFecha.setText(fechaActual());
 
         ImageIcon icono = new ImageIcon(getClass().getResource("/Imagenes/Logo.png"));
 
@@ -81,15 +81,6 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
         });
     }
 
-    private String fechaActual() {
-        Date fechaActual = new Date();
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-        String fechaActualFormateada = formatoFecha.format(fechaActual);
-
-        return fechaActualFormateada;
-
-    }
-
     private String formatoFecha(Date fechaSeleccionada) {
 
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -97,7 +88,7 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
         return fechaSelecionadaFormateada;
     }
 
-    private void insertarPersona() {
+    private void insertarPersona(String cedula) {
 
         try {
 
@@ -113,10 +104,13 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
                     jTextTelefono1.getText(),
                     jTextTelefono2.getText(),
                     jTextCorreo.getText(),
-                    fechaActual());
+                    txtFecha.getText());
 
-            consulta.agregarPaciente(aux);
-            JOptionPane.showMessageDialog(null, "El paciente se ingreso correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
+    
+
+            consulta.actualizarPaciente(aux,consulta.obtenerIdPaciente(cedula));
+
+            JOptionPane.showMessageDialog(null, "El paciente se actualizo correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
             vistaI = new VistaInicio();
             vistaI.setVisible(true);
@@ -163,7 +157,7 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtFecha = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButtonGuardar = new javax.swing.JButton();
+        jButtonActualizar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jDateFechaNaci = new com.toedter.calendar.JDateChooser();
         jLabel4 = new javax.swing.JLabel();
@@ -187,7 +181,7 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
 
         jLabelTitulo.setBackground(new java.awt.Color(255, 255, 255));
         jLabelTitulo.setFont(new java.awt.Font("Roboto Medium", 0, 18)); // NOI18N
-        jLabelTitulo.setText("HISTORIA PACIENTE");
+        jLabelTitulo.setText("ACTUALIZAR DATOS PACIENTE");
         jLabelTitulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -300,11 +294,11 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel2.setText("Nombres");
 
-        jButtonGuardar.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jButtonGuardar.setText("Agregar Paciente");
-        jButtonGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButtonActualizar.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jButtonActualizar.setText("Actulaizar ");
+        jButtonActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonGuardarMouseClicked(evt);
+                jButtonActualizarMouseClicked(evt);
             }
         });
 
@@ -381,6 +375,7 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
                     .addComponent(jLabel10))
                 .addGap(21, 21, 21)
                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBoxInstruccion, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(fondoLayout.createSequentialGroup()
                         .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(txtFecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -406,17 +401,15 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel5)))
                         .addGap(18, 18, 18)
-                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextTelefono1)
-                            .addComponent(jTextTelefono2)
-                            .addComponent(jTextCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextDireccion)
-                            .addComponent(jComboBoxEstadoCivil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(fondoLayout.createSequentialGroup()
-                        .addComponent(jComboBoxInstruccion, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(104, 104, 104)
-                        .addComponent(jButtonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(29, 29, 29))
+                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonActualizar)
+                            .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jComboBoxEstadoCivil, 0, 190, Short.MAX_VALUE)
+                                .addComponent(jTextTelefono1)
+                                .addComponent(jTextTelefono2))
+                            .addComponent(jTextDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                            .addComponent(jTextCorreo))))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         fondoLayout.setVerticalGroup(
             fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -489,12 +482,15 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
                             .addComponent(jLabel9)
                             .addComponent(jTextCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel15))
-                        .addGap(17, 17, 17)
-                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(jComboBoxInstruccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(fondoLayout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jComboBoxInstruccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(fondoLayout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addComponent(jButtonActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -546,7 +542,7 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
         mensaje();
     }//GEN-LAST:event_jLabelSalirMouseClicked
 
-    private void jButtonGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonGuardarMouseClicked
+    private void jButtonActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonActualizarMouseClicked
         consulta = new Consulta();
 
         if ("".equals(jTextCorreo.getText())) {
@@ -565,16 +561,15 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
         } else if ("".equals(jTextTelefono1.getText())) {
 
             mensajeVacio("TELÉFONO 1");
-        } else if (cedulaDuplicada(jTextNumCedula.getText())) {
-            JOptionPane.showMessageDialog(null, "La cédula ingresada ya existe.", "Advertencia", JOptionPane.WARNING_MESSAGE);
 
         } else {
-            insertarPersona();
+
+            insertarPersona(numCedula);
 
         }
 
 
-    }//GEN-LAST:event_jButtonGuardarMouseClicked
+    }//GEN-LAST:event_jButtonActualizarMouseClicked
 
     private void jLabelBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelBuscarMouseClicked
         this.dispose();
@@ -603,20 +598,20 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VistaNuevoPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaActualizarPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VistaNuevoPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaActualizarPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VistaNuevoPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaActualizarPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VistaNuevoPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaActualizarPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VistaNuevoPaciente().setVisible(true);
+                new VistaActualizarPaciente().setVisible(true);
             }
         });
     }
@@ -627,7 +622,7 @@ public final class VistaNuevoPaciente extends javax.swing.JFrame {
     public javax.swing.JLabel btnNPaciente;
     public javax.swing.JLabel btnSalir;
     private javax.swing.JPanel fondo;
-    public javax.swing.JButton jButtonGuardar;
+    public javax.swing.JButton jButtonActualizar;
     public javax.swing.JComboBox<String> jComboBoxEstadoCivil;
     public javax.swing.JComboBox<String> jComboBoxInstruccion;
     public javax.swing.JComboBox<String> jComboBoxSexo;

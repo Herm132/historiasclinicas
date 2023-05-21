@@ -9,12 +9,12 @@ import javax.swing.table.DefaultTableCellRenderer;
  *
  * @author RAVEN
  */
-public class CeldaRender extends DefaultTableCellRenderer {
+public class CeldaRender2 extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable jtable, Object o, boolean isSeleted, boolean bln1, int row, int column) {
         Component com = super.getTableCellRendererComponent(jtable, o, isSeleted, bln1, row, column);
-        Botones action = new Botones();
+        Botones2 action = new Botones2();
         if (isSeleted == false && row % 2 == 0) {
             action.setBackground(Color.WHITE);
         } else {

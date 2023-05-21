@@ -9,9 +9,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Font;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -26,13 +29,13 @@ import modelo.Paciente;
 public final class VistaInicio extends javax.swing.JFrame {
 
     private VistaNuevoPaciente vistanp = null;
-    private VistaMotivoConsulta vistamc = null;
+    private VistaActualizarPaciente vistaap = null;
     private Consulta consulta = null;
     private Paciente nprec = null;
     private VistaPaciente vistap = null;
     private MotivoConsulta mconsulta = null;
     private VistaBusqueda vistab = null;
-    
+    private VistaMotivoConsulta vistamc = null;
 
     public VistaInicio() {
         initComponents();
@@ -94,7 +97,7 @@ public final class VistaInicio extends javax.swing.JFrame {
         });
     }
 
-    public void btnEditar() {
+    public void btnVer() {
 
         // Obtener el índice de la columna "num_Cedula"
         int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
@@ -160,6 +163,61 @@ public final class VistaInicio extends javax.swing.JFrame {
 
     }
 
+    public void btnEditar() {
+
+        // Obtener el índice de la columna "num_Cedula"
+        int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
+
+        // Obtener el valor de la celda seleccionada en la columna "num_Cedula"
+        int filaSeleccionada = jTableDatos.getSelectedRow(); // asumimos que "tabla" es el nombre de tu JTable
+        String identificador = jTableDatos.getValueAt(filaSeleccionada, columna).toString();
+
+        nprec = new Paciente();
+        consulta = new Consulta();
+        nprec = consulta.buscarPacineteID(identificador);
+
+        this.dispose();
+
+        vistaap = new VistaActualizarPaciente();
+
+        vistaap.setVisible(true);
+
+        vistaap.txtFecha.setText(nprec.getFechaRegistro());
+
+        vistaap.jTextNumCedula.setText(nprec.getNumCedula());
+
+        vistaap.jTextNombres.setText(nprec.getNombres());
+
+        vistaap.jTextApellido.setText(nprec.getApellidos());
+
+        String stringFecha = nprec.getFechaNacimiento();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date fecha = null;
+
+        try {
+            fecha = formato.parse(stringFecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        vistaap.jDateFechaNaci.setDate(fecha);
+
+        vistaap.jComboBoxSexo.setSelectedItem(nprec.getSexo());
+
+        vistaap.jComboBoxEstadoCivil.setSelectedItem(nprec.getEstadoCivil());
+
+        vistaap.jComboBoxInstruccion.setSelectedItem(nprec.getInstruccion());
+
+        vistaap.jTextDireccion.setText(nprec.getDireccion());
+
+        vistaap.jTextTelefono1.setText(nprec.getNumTelefono1());
+        vistaap.jTextTelefono2.setText(nprec.getNumTelefono2());
+
+        vistaap.jTextCorreo.setText(nprec.getCorreo());
+        vistaap.numCedula = identificador;
+
+    }
+
     public void modeloTabla2(VistaMotivoConsulta vmc, String identificador) {
         DefaultTableModel modelo = new DefaultTableModel() {
             @Override
@@ -176,10 +234,10 @@ public final class VistaInicio extends javax.swing.JFrame {
 
         vmc.jTableDatos.setModel(modelo);
 
-        TablaEventos event = new TablaEventos() {
+        TablaEventos2 event = new TablaEventos2() {
             @Override
             public void onView(int row) {
-                               vmc.dispose();
+                vmc.dispose();
 
                 consulta = new Consulta();
                 int columna = 0; // asumimos que "num_Cedula" es la primera columna (índice 0)
@@ -194,12 +252,10 @@ public final class VistaInicio extends javax.swing.JFrame {
 
                 nprec = consulta.buscarPacineteID(identificador);
 
-       
-
                 vistap = new VistaPaciente();
 
-                String contenidoAntes = consulta.descripcionPorId(consulta.obtenerIdPaciente(identificador),mconsulta.getIdMConsulta());
-                   vistap.jTextAreaHistoria.setText(contenidoAntes);
+                String contenidoAntes = consulta.descripcionPorId(consulta.obtenerIdPaciente(identificador), mconsulta.getIdMConsulta());
+                vistap.jTextAreaHistoria.setText(contenidoAntes);
 
                 vistap.jIdMconsulta.setText(Integer.toString(mconsulta.getIdMConsulta()));
                 vistap.setVisible(true);
@@ -211,9 +267,10 @@ public final class VistaInicio extends javax.swing.JFrame {
                 vistap.txtInstruccion.setText(nprec.getInstruccion());
                 vistap.txtMConsulta.setText(mConsulta);
             }
+
         };
-        vmc.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender());
-        vmc.jTableDatos.getColumnModel().getColumn(1).setCellEditor(new CeldaEditor(event));
+        vmc.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender2());
+        vmc.jTableDatos.getColumnModel().getColumn(1).setCellEditor(new CeldaEditor2(event));
 
         JTableHeader encabezado = vmc.jTableDatos.getTableHeader();
         encabezado.setFont(new Font("Roboto", Font.BOLD, 14)); // Tipo de letra: Arial, Negrita, Tamaño: 16
@@ -243,16 +300,22 @@ public final class VistaInicio extends javax.swing.JFrame {
 
         this.jTableDatos.setModel(modelo);
 
-        TablaEventos event = new TablaEventos() {
+        TablaEventos1 event = new TablaEventos1() {
 
             @Override
             public void onView(int row) {
-                  btnEditar();
+                btnVer();
+            }
+
+            @Override
+            public void onEdit(int row) {
+
+                btnEditar();
             }
         };
 
-        this.jTableDatos.getColumnModel().getColumn(3).setCellRenderer(new CeldaRender());
-        this.jTableDatos.getColumnModel().getColumn(3).setCellEditor(new CeldaEditor(event));
+        this.jTableDatos.getColumnModel().getColumn(3).setCellRenderer(new CeldaRender1());
+        this.jTableDatos.getColumnModel().getColumn(3).setCellEditor(new CeldaEditor1(event));
     }
 
     @SuppressWarnings("unchecked")

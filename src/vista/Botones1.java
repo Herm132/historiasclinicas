@@ -15,25 +15,25 @@ import javax.swing.JButton;
  *
  * @author Harold
  */
-public class Botones extends javax.swing.JPanel {
+public class Botones1 extends javax.swing.JPanel {
 
     /**
      * Creates new form botones
      */
-    public Botones() {
+    public Botones1() {
         initComponents();
-//        setCustomCursor(btnEditar); // cambiar cursor del botón de edición
+        setCustomCursor(btnEditar); // cambiar cursor del botón de edición
         setCustomCursor(btnVer);
 
     }
 
-    public void initEvent(TablaEventos event, int row) {
-//        btnEditar.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent ae) {
-//                event.onEdit(row);
-//            }
-//        });
+    public void initEvent(TablaEventos1 event, int row) {
+        btnEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                event.onEdit(row);
+            }
+        });
         btnVer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -59,8 +59,11 @@ public class Botones extends javax.swing.JPanel {
     private void initComponents() {
 
         btnVer = new vista.AccionBoton();
+        btnEditar = new vista.AccionBoton();
 
         btnVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/eye18x18.png"))); // NOI18N
+
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/pencil18x18.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -69,19 +72,24 @@ public class Botones extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnVer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private vista.AccionBoton btnEditar;
     private vista.AccionBoton btnVer;
     // End of variables declaration//GEN-END:variables
 }
