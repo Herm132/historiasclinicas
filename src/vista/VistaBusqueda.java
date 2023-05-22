@@ -8,7 +8,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import controlador.Controlador;
 import java.awt.Font;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

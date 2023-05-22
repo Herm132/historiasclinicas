@@ -152,7 +152,7 @@ public final class VistaMotivoConsulta extends javax.swing.JFrame {
 
             }
         };
-        this.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender1());
+        this.jTableDatos.getColumnModel().getColumn(1).setCellRenderer(new CeldaRender2());
         this.jTableDatos.getColumnModel().getColumn(1).setCellEditor(new CeldaEditor2(event));
 
         JTableHeader encabezado = jTableDatos.getTableHeader();
